@@ -1,0 +1,9 @@
+alias down='"$HOME/downloads"'
+alias desk='"$HOME"/desktop"'
+
+alias pragma='"$HOME/pragma"'
+alias srs='"$HOME/srs"'
+
+alias ls='ls --color'
+alias ll='ls -Al'
+

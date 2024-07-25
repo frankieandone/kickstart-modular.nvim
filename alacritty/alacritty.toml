@@ -1,0 +1,23 @@
+live_config_reload = true
+
+[font]
+size = 15
+[font.normal]
+family = "FiraCode Nerd Font"
+[font.italic]
+family = "FiraCode Nerd Font"
+[font.bold]
+family = "FiraCode Nerd Font"
+[window]
+decorations = 'Buttonless'
+decorations_theme_variant = 'Dark'
+[window.padding]
+y = 40
+x = 1
+[window.dimensions]
+columns = 101
+lines = 35
+
+[mouse]
+hide_when_typing = true
+

@@ -1,0 +1,135 @@
+#!/usr/bin/env zsh
+#----------------------------------------------------------------------------------------------
+umask 077
+#----------------------------------------------------------------------------------------------
+export DOTFILES="${HOME}/dotfilesx"
+export ZSH_DOTFILES="${DOTFILES}/zsh"
+
+if [ ! -d "$DOTFILES" ]; then
+    git clone git@github.com/frankieandone/dotfilesx "$DOTFILES"
+fi
+
+#NOTE: xdg
+AS="$HOME/Library/Application\\ Support"
+#export XDG_DATA_HOME="$AS"
+#export XDG_DATA_DIRS="$AS"
+export XDG_CONFIG_HOME="$DOTFILES"
+#export XDG_CONFIG_DIRS="$HOME/Library/Preferences:$AS:/LibraryPreferences"
+#export XDG_STATE_HOME="$AS"
+#export XDG_CACHE_HOME="$HOME/Library/Caches"
+#export XDG_RUNTIME_DIR="$AS"
+
+export STARSHIP_CONFIG=~/dotfilesx/starship/starship.toml
+#----------------------------------------------------------------------------------------------
+#NOTE: homebrew
+if [ ! -d /opt/homebrew ]; then
+    /bin/bash -c \
+        "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+#----------------------------------------------------------------------------------------------
+#NOTE: editor
+TERM=xterm-256color
+EDITOR="vi"
+if (nvim -v &>/dev/null); then
+if [ ! -d "$DOTFILES/nvim" ]; then
+    git clone git@github.com/frankieandone/kickstart "$DOTFILES/kickstart"
+        res=$?
+    if [ $res -ne 0 ]; then
+        git clone --depth=1 https://github.com/nvim-lua/kickstart.nvim "$DOTFILES/kickstart"
+    fi
+ln -sfv "$DOTFILES/kickstart" "$DOTFILES/nvim"
+fi
+else
+    brew install nvim
+fi
+
+export EDITOR="nvim"
+
+alias conf="cd $DOTFILES && $EDITOR ."
+alias zconf="cd $DOTFILES/zsh && $EDITOR ."
+alias vconf="cd $$DOTFILES/nvim && $EDITOR ."
+#----------------------------------------------------------------------------------------------
+#NOTE: votla, node, pnpm
+if ! (volta -v &>/dev/null); then
+    brew install volta && \
+    volta install node@latest && \
+    volta install pnpm@latest
+fi
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:${PATH+:$PATH}"
+#----------------------------------------------------------------------------------------------
+#NOTE: rustup, rustc, cargo
+if [ ! -d "$HOME/.cargo" ]; then
+    brew install rustup
+    rustup-init -y
+fi
+
+source "$HOME/.cargo/env"
+#----------------------------------------------------------------------------------------------
+fpath+="${ZDOTDIR:-~}/.zsh_functions"
+fpatth+="${DOTFILES}/zsh/fn"
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/dotfilesx}/zinit/zinit"
+[ ! -d "$ZINIT_HOME" ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d "$ZINIT_HOME" ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+zinit ice wait
+zinit light zsh-users/zsh-autosuggestions
+zinit ice wait
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit ice wait
+zinit light zsh-users/zsh-completions
+zinit ice wait
+zinit light MichaelAquilina/zsh-you-should-use
+
+# zinit snippet <URL>        # Raw Syntax with URL
+# zinit snippet OMZ::<PATH>  # Shorthand OMZ/ (https://github.com/ohmyzsh/ohmyzsh/raw/master/)
+# zinit snippet OMZL::<PATH> # Shorthand OMZ/lib/
+# zinit snippet OMZT::<PATH> # Shorthand OMZ/themes/
+# zinit snippet OMZP::<PATH> # Shorthand OMZ/plugins/
+zinit ice wait
+zinit snippet OMZP::git
+zinit ice wait
+zinit snippet OMZP::sudo
+#----------------------------------------------------------------------------------------------
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
+HISTSIZE=10000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space #use a <SPACE> prefix to not save into command into history
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+#case insensitive matching
+zstyle ':completion:*' matcher-list 'm:{a-z}=m:{A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*': fzf-preview 'ls --color $realpath'
+
+alias rm='rm -i'
+alias ls='ls --color'
+alias ll='ls -Al'
+
+#ctrl+r, ctrl+p, ctrl+n,
+eval "$(fzf --zsh)"
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+
+
