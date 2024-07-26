@@ -123,13 +123,9 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*': fzf-preview 'ls --color $realpath'
 
-alias rm='rm -i'
-alias ls='ls --color'
-alias ll='ls -Al'
-
 #ctrl+r, ctrl+p, ctrl+n,
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
-
+source "$DOTFILES/aliases"

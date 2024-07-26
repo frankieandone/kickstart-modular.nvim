@@ -4,6 +4,7 @@ alias desk='"$HOME"/desktop"'
 alias pragma='"$HOME/pragma"'
 alias srs='"$HOME/srs"'
 
+alias rm='rm -i'
 alias ls='ls --color'
 alias ll='ls -Al'
 

@@ -10,7 +10,7 @@ vim.api.nvim_set_hl(0, 'Visual', { bold = true, fg = 'NONE', bg = '#262626' })
 vim.cmd 'colorscheme habamax'
 vim.cmd 'syntax on'
 
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -25,6 +25,7 @@ vim.opt.colorcolumn = '100'
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = { 'number', 'line' }
 vim.opt.expandtab = true
+vim.opt.foldcolumn = '1'
 vim.opt.formatoptions:append 't'
 vim.opt.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
 vim.opt.hlsearch = true
@@ -41,7 +42,7 @@ vim.opt.shiftwidth = 4
 vim.opt.showcmd = true
 vim.opt.showmode = false
 vim.opt.showtabline = 2
-vim.opt.signcolumn = 'auto:1'
+vim.opt.signcolumn = 'yes:1'
 vim.opt.smartcase = true
 vim.opt.softtabstop = 4
 vim.opt.splitbelow = true
