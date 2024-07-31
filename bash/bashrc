@@ -2,13 +2,6 @@
 
 umask 077
 
-#NOTE:
-#export CLICOLOR=1
-#export LSCOLORS=GxFxCxDxBxegedabagaced
-
-alias ls='ls --color'
-alias ll='ls -Alp'
-alias rl='source "${HOME}/.bashrc"'
-alias rm='rm -i'
 . "$HOME/.cargo/env"
-source /Users/hq/dotfilesx/alacritty/extra/completions/alacritty.bash
+
+. "$HOME/dotfilesx/aliases"
