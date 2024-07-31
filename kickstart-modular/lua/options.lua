@@ -33,7 +33,14 @@ vim.opt.ignorecase = true
 vim.opt.inccommand = 'split'
 vim.opt.incsearch = true
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = {
+    tab = '» ',
+    trail = '·',
+    nbsp = '␣',
+    eol = '$',
+    extends = '>',
+    precedes = '<',
+}
 vim.opt.mouse = 'a'
 vim.opt.number = true
 vim.opt.rtp:append '/opt/homebrew/opt/fzf'
