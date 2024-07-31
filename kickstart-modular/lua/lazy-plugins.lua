@@ -65,6 +65,7 @@ require('lazy').setup({
     --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
     require 'custom.plugins.supermaven',
     require 'custom.plugins.kanagawa',
+    require 'custom.plugins.advanced_git_search',
 }, {
     install = {
         missing = true,
