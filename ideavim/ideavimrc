@@ -1,6 +1,5 @@
 "" .ideavimrc - Matt Chapman
 
-
 "" Base Settings
 "" ========================================================
 
@@ -108,8 +107,6 @@ let g:WhichKeyDesc_errors_prev = "<leader>ep Go to previous error in solution"
 
 "" Key mappings
 "" ========================================================
-
-inoremap jk <Esc>
 
 " Tab navigation
 nnoremap <A-n> :tabnext<CR>
