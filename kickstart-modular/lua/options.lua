@@ -26,6 +26,12 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = { 'number', 'line' }
 vim.opt.expandtab = true
 vim.opt.foldcolumn = '1'
+vim.opt.foldexpr = 'v:vua.vim.treesitter.foldexpr()'
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 1
+vim.opt.foldmethod = 'indent'
+vim.opt.foldnestmax = 20
+vim.opt.foldtext = ''
 vim.opt.formatoptions:append 't'
 vim.opt.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
 vim.opt.hlsearch = true
