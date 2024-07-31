@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set_default_file_perms_in_pwd() {
+    #set default file permissions to read/write for all files
+    find "$1" -type f -exec chmod 600 {} +
+
+    #set default directories permissions to read/write/execute for
+    #all folders execute permission is required for allowing shell
+    #to run at/on/inside of said directories
+    find "$1" -type d -exec chmod 700 {} +
+}

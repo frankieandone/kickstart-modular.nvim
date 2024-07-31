@@ -2,6 +2,23 @@
 #----------------------------------------------------------------------------------------------
 umask 077
 #----------------------------------------------------------------------------------------------
+setopt extendedglob
+setopt dotglob
+
+load_fn() {
+    local dir="${HOME}/dotfilesx/fn"
+
+    fpath+=("$dir" "$dir"/**/*(.N/))
+
+    find "$dir" -type f | while read -r file; do
+        #extract the base name without extension
+        local func_name=$(basename "$file" | sed 's/\.[^.]*$//')
+
+        autoload -Uz "$func_name"
+    done
+}
+load_fn
+#----------------------------------------------------------------------------------------------
 export DOTFILES="${HOME}/dotfilesx"
 export ZSH_DOTFILES="${DOTFILES}/zsh"
 
@@ -73,15 +90,17 @@ fi
 
 source "$HOME/.cargo/env"
 #----------------------------------------------------------------------------------------------
-fpath+="${ZDOTDIR:-~}/.zsh_functions"
-fpatth+="${DOTFILES}/zsh/fn"
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/dotfilesx}/zinit/zinit"
 [ ! -d "$ZINIT_HOME" ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d "$ZINIT_HOME" ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
+zmodload zsh/complist
 autoload -Uz _zinit
+fpath+="${ZSH_DOTFILES}/.zsh_functions"
+fpath+="${ZSH_DOTFILES}/fn"
+autoload -Uz $fpath/*(.N) #(:t) vs (.N): :t filenames without extension, non-hidden
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 zinit ice wait
