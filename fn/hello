@@ -1,0 +1,4 @@
+hello() {
+    $HOME/dotfilesx/cfn/build/hello
+}
+
