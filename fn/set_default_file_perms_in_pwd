@@ -1,11 +1,17 @@
 #!/bin/sh
 
 set_default_file_perms_in_pwd() {
+    local target="${1:-.}" #default to current directory
+    
+    #id -G: all groups
+    #id -g: effective group
+    chown -R $(id -u || echo $USER):$(id -g) "$target"
+    
     #set default file permissions to read/write for all files
-    find "$1" -type f -exec chmod 600 {} +
+    find "$target" -type f -exec chmod 600 {} +
 
     #set default directories permissions to read/write/execute for
     #all folders execute permission is required for allowing shell
     #to run at/on/inside of said directories
-    find "$1" -type d -exec chmod 700 {} +
+    find "$target" -type d -exec chmod 700 {} +
 }
