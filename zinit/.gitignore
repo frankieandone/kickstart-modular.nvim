@@ -22,5 +22,3 @@ zmodules/
 tests/_output/
 tests/_support/tmp*
 .idea
-.DS_Store
-

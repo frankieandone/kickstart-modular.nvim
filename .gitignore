@@ -2,4 +2,5 @@
 .git
 .idea
 zinit
+zoxide
 *.un~

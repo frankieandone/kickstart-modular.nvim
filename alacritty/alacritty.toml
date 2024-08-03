@@ -1,3 +1,7 @@
+import = [
+    "~/dotfilesx/alacritty/alacritty.toml",
+]
+
 live_config_reload = true
 
 [font]
@@ -21,3 +25,7 @@ x = 20
 columns = 101
 lines = 35
 
+[keyboard]
+bindings = [
+  { key = "N", mods = "Control|Shift", action = "CreateNewWindow" }
+]
