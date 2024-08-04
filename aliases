@@ -1,0 +1,32 @@
+#!/bin/sh
+#POSIX-compliant for sourcing from sh, bash, zsh
+
+alias down='"$HOME/downloads"'
+alias desk='"$HOME"/desktop"'
+
+alias pragma='"$HOME/pragma"'
+alias srs='"$HOME/srs"'
+
+alias rm='rm -i'
+alias l='ls --color'
+alias ll='ls -AlF'
+
+rl() {
+    shell="$(ps -p $$ -o 'comm=')"
+    case "$shell" in
+    *zsh*)
+        . "${HOME}/.zshrc"
+        ;;
+    *bash*)
+        . "${HOME}/.bashrc"
+        ;;
+    *sh*)
+        . "${HOME}/.shrc"
+        ;;
+    *)
+        echo "Unsupported shell: $shell"
+        ;;
+    esac
+    echo "Reloaded $shell"
+    unset shell
+}

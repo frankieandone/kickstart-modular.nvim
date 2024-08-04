@@ -1,0 +1,33 @@
+#!/bin/sh
+
+load_ssh_keys() {
+    secrets_dir="$HOME/secrets"
+
+    if [ ! -d "$secrets_dir" ]; then
+        echo "No secrets directory found at $secrets_dir"
+        return 1
+    fi
+
+    for file in "$secrets_dir"/*; do
+        # Skip directories and non-private key files
+        if [ -f "$file" ] && [ "${file%%.pub}" = "$file" ]; then
+            printf "Add %s to keychain? (y/n): " "$file"
+            IFS= read -r response
+            case "$response" in
+                [Yy]*)
+                    if ssh-add --apple-use-keychain "$file"; then
+                        echo "Successfully added $file to keychain"
+                    else
+                        echo "Failed to add $file to keychain"
+                    fi
+                    ;;
+                *)
+                    echo "Skipping $file"
+                    ;;
+            esac
+        fi
+    done
+
+    echo "Current SSH keys in the agent:"
+    ssh-add -L || echo "No keys found in the agent"
+}

@@ -1,0 +1,71 @@
+colorscheme habamax
+set termguicolors
+set background=dark
+syntax on
+
+hi Normal ctermbg=232 guibg=#080808
+hi Visual cterm=bold gui=bold ctermfg=NONE guifg=NONE ctermbg=235 guibg=#262626 
+
+"Use a line cursor within insert mode and a block cursor everywhere else.
+"Ps = 0 -> blinking block.
+"Ps = 1 -> blinking block (default).
+"Ps = 2 -> steady block.
+"Ps = 3 -> blinking underline
+"Ps = 4 -> steady underline.
+"Ps = 5 -> blinking bar (xterm).
+"Ps = 6 -> seady bar (xterm).
+let &t_SI = "\e[6 q" "SI: insert mode
+let &t_EI = "\e[2 q" "EI: everything else
+
+set nu
+set signcolumn=yes "auto: when signs,no: never, yes: always, number: when number or signs
+set cursorline
+set cursorlineopt=number,line
+hi CursorLineNr ctermfg=15 guifg=#ffffff
+set scrolloff=10
+
+set showmode
+set showcmd
+set showtabline=2 "0: never, 1: when 2+ pages, 2: always
+hi TabLineFill ctermbg=232 guibg=#080808 "tabline z-0 canvas: aesthetic if matched against ctermbg of colorscheme
+hi TabLine ctermfg=63 guifg=#5f5fff ctermbg=NONE guibg=NONE "non-active tabs: 
+hi TabLineSel ctermfg=15 guifg=#ffffff ctermbg=NONE guibg=NONE "active tab
+hi ColorColumn ctermbg=234 guibg=#1c1c1c
+hi LineNr ctermfg=63 guifg=#1c1c1c
+
+set textwidth=100
+set colorcolumn=96
+set formatoptions+=t
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set noexpandtab
+set autoindent
+set autoread
+set backspace=indent,eol,start
+set backupdir=/tmp//,.
+
+set smartcase
+set incsearch
+set hlsearch
+
+set mouse=a
+set undofile
+if !isdirectory($HOME."dotfilesx/vim/undodir")
+	call mkdir($HOME."dotfilesx/vim/undodir", "", 077)
+endif
+set undofiledir=$HOME/dotfilesx/vim/undodir
+if has("unix")
+    let s:uname = system("uname -s")
+	if s:uname == "Darwin"
+		set clipboard="unnamed"
+    else
+		set clipboard="unamedplus"
+    endif
+endif
+
+let mapleader = " "
+let maplocalleader = " "
+
+set rtp+=/opt/homebrew/opt/fzf
+

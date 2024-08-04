@@ -1,0 +1,15 @@
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty
+source /home/m/dotfilesx/bash/completions/alacritty

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+mv_files_in_dir_with_respect_to_destination_files() {
+    for file in "$1"/*; do
+        dest="/destination/$(basename "$file")"
+        if [ -e "$dest" ]; then
+            echo "$dest exists, skipping."
+        else
+            mv "$file" "$dest"
+        fi
+    done
+}

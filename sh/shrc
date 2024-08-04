@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+umask 077
+
+alias rm='rm -i'
+alias rl='source "${HOME}/.shrc"'
+alias ls='ls --color'
+alias ll='ls -Alp'
+

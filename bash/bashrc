@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+umask 077
+
+HISTSIZE=10000
+HISTFILESIZE=10000
+HISTFILE="$HOME/.bash_history"
+HISTDUP=$'\0'
+shopt -s cmdhist
+shopt -s lithist
+shopt -s histappend
+shopt -s globstar
+shopt -s dotglob
+
+. "$HOME/.cargo/env"
+
+. "$HOME/dotfilesx/aliases"
+
+for file in "$HOME/dotfilesx/fn/*"; do
+    . "$file"
+done
+
+#if not running interactively, return.
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+HISTDUP=erase
+HISTCONTROL=ignoreboth
+shopt -s histreedit
+shopt -s histverify
+shopt -s checkwinsize
+shopt -s nocaseglob
+shopt -s nullglob
+shopt -s failglob
+shopt -s extglob
+shopt -s globalskipdots
+shopt -s dotglob
+shopt -s cdspell
