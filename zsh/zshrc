@@ -30,13 +30,7 @@ fi
 if [[ "$(uname -s)" == "Darwin" ]]; then
     export XDG_CONFIG_HOME="${DOTFILES}"
 elif [[ "$(uname -s)" == "Linux" ]]; then
-    export XDG_DATA_HOME="${DOTFILES}"
-    export XDG_DATA_DIRS="/usr/local/share"
     export XDG_CONFIG_HOME="${DOTFILES}"
-    export XDG_CONFIG_DIRS="${DOTFILES}:/etc/xdg"
-    export XDG_STATE_HOME="${HOME}/.local/state"
-    export XDG_CACHE_HOME="${HOME}/.cache"
-    export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 fi
 
 export STARSHIP_CONFIG=~/dotfilesx/starship/starship.toml
@@ -69,6 +63,7 @@ if [[ "$(uname -s)" == "Linux" ]]; then
     export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
     export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    export PATH="/usr/local/bin:${PATH}"
 fi
 #----------------------------------------------------------------------------------------------
 #NOTE: editor
@@ -140,6 +135,111 @@ zinit ice wait
 zinit snippet OMZP::git
 zinit ice wait
 zinit snippet OMZP::sudo
+#----------------------------------------------------------------------------------------------
+ALACRITTY_HOME="${DOTFILES}/alacritty"
+export ALACRITTY_CONFIG="${DOTFILES}/alacritty/alacritty.toml"
+ALACRITTY_DESKTOP="${DOTFILES}/alacritty/Alacritty.desktop"
+
+if ! command -v alacritty 2>&1 >/dev/null; then
+    read -r "res?Do you want to remove the existing Alacritty installation? [y/N] "
+    if [ "${res[1]}" = "y" ] || [ "$res" = "Y" ]; then
+        if [ -f "${ALACRITTY_CONFIG}" ]; then
+            mv -v "$ALACRITTY_CONFIG" "${DOTFILES}"
+            alacritty_config_tmp="${DOTFILES}/$(basename "$ALACRITTY_CONFIG")"
+        fi
+        if [ -f "$ALACRITTY_DESKTOP" ]; then
+            mv -v "$ALACRITTY_DESKTOP" "${DOTFILES}"
+            alacritty_desktop_tmp="${DOTFILES}/$(basename "$ALACRITTY_DESKTOP")"
+        fi
+
+        rm -rf "${ALACRITTY_HOME}"
+        git clone --depth=1 https://github.com/alacritty/alacritty.git "${ALACRITTY_HOME}"
+        rm -rf .git
+
+        [ -f "$alacritty_config_tmp" ] && mv -fv "$alacritty_config_tmp" "${ALACRITTY_CONFIG}"
+        unset alacritty_config_tmp
+        [ -f "$alacritty_desktop_tmp" ] && mv -fv "$alacritty_desktop_tmp" "${ALACRITTY_DESKTOP}"
+        unset alacritty_desktop_tmp
+    fi
+    previous_dir="$(pwd)"
+    cd "${ALACRITTY_HOME}"
+    sudo apt install -y \
+        cmake \
+        pkg-config \
+        libfreetype6-dev \
+        libfontconfig1-dev \
+        libxcb-xfixes0-dev \
+        libxkbcommon-dev \
+        python3
+    cargo build --release
+    infocmp alacritty
+    sudo tic -xe alacritty,alacritty-direct extra/alacritty.info
+    sudo cp -fv target/release/alacritty /usr/local/bin
+    
+    #TODO: add support for macos file permissions?
+    if [ "$(uname -s)" = "Linux" ]; then
+        sudo groupadd alacritty_users
+        sudo usermod -aG alacritty_users $USER
+        sudo chown root:alacritty_users /usr/local/bin/alacritty
+        sudo chmod 755 /usr/local/bin/alacritty 
+    fi
+    #TODO: add support for macos custom icon?
+    if [ "$(uname -s)" = "Linux" ]; then
+        brew update
+        brew install httpie
+
+        mkdir -p extra/logo/patched
+        http --download https://github.com/dfl0/mac-icons/raw/main/alacritty/icons/flat_mono/alacritty_flat_mono_full.png --output extra/logo/patched/Alacritty.png
+        sudo cp -fv extra/logo/patched/Alacritty.png /usr/share/pixmaps
+    fi
+    if [ "$(uname -s)" = "Linux" ]; then
+        if [ ! -f "${ALACRITTY_DESKTOP}" ]; then
+            if [ -f "${HOME}/Downloads/$(basename "$ALACRITTY_DESKTOP")" ]; then
+                cp -fv "${HOME}/Downloads/$(basename "$ALACRITTY_DESKTOP")" "${ALACRITTY_DESKTOP}"
+            elif [ -f "${HOME}/Desktop/$(basename "$ALACRITTY_DESKTOP")" ]; then
+                cp -fv "${HOME}/Desktop/$(basename "$ALACRITTY_DESKTOP")" "${ALACRITTY_DESKTOP}"
+            else
+                cp -fv extra/linux/Alacritty.desktop "${ALACRITTY_DESKTOP}"
+            fi
+        fi
+        sudo chown root:alacritty_users "${ALACRITTY_DESKTOP}"
+        sudo chmod 755 "${ALACRITTY_DESKTOP}"
+        sudo desktop-file-install "${ALACRITTY_DESKTOP}"
+        desktop-file-validate "${ALACRITTY_DESKTOP}"
+        sudo update-desktop-database
+    fi
+    
+    sudo mkdir -p /usr/local/share/man/man1
+    sudo mkdir -p /usr/local/share/man/man5
+
+    if [ "$(uname -s)" = "Linux" ]; then
+        sudo apt install -y scdoc
+    elif [ "$(uname -s)" = "Darwin" ]; then
+        brew install -y scdoc
+    fi
+    scdoc < extra/man/alacritty.1.scd | gzip -c | \
+        sudo tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
+    scdoc < extra/man/alacritty-msg.1.scd | gzip -c | \
+        sudo tee /usr/local/share/man/man1/alacritty-msg.1.gz > /dev/null
+    scdoc < extra/man/alacritty.5.scd | gzip -c | \
+        sudo tee /usr/local/share/man/man5/alacritty.5.gz > /dev/null
+    scdoc < extra/man/alacritty-bindings.5.scd | gzip -c | \
+        sudo tee /usr/local/share/man/man5/alacritty-bindings.5.gz > /dev/null
+
+    # ZSH_COMPLETIONS="${DOTFILES}/zsh/completions"
+    # echo 'fpath+=${ZSH_COMPLETIONS}' >> ~/.zshrc
+    # cp extra/completions/_alacritty ${ZSH_COMPLETIONS}/_alacritty
+    # unset ZSH_COMPLETIONS
+
+    # BASH_COMPLETIONS="${DOTFILES}/bash/completions"
+    # mkdir -p "${BASH_COMPLETIONS}"
+    # cp extra/completions/alacritty.bash "${BASH_COMPLETIONS}/alacritty"
+    # echo "source ${BASH_COMPLETIONS}/alacritty" >> "${DOTFILES}/bash/.bashrc"
+    # unset BASH_COMPLETIONS
+
+    cd "$previous_dir"
+    unset previous_dir
+fi
 #----------------------------------------------------------------------------------------------
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
