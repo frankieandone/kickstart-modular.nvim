@@ -418,7 +418,8 @@ zsdoc/data
 /tests/_output/*
 !/tests/_output/.gitkeep
 
-jgit
-pulse
-
-# End of https://www.toptal.com/developers/gitignore/api/macos,linux,vim,intellij+all,cmake,rust,rust-analyzer,zsh,node,java,kotlin,ssh,gpg
+#NOTE: Easier to keep list of un-ignored than to ignore everything but leaving the above
+# incase this decision is overturned.
+#-------------------------------------------------------------------------------
+*
+!/.gitkeep
