@@ -54,10 +54,10 @@ blink_interval = 1
 blink_timeout = 0
 unfocused_hollow = true
 thickness = 0.15
+style = { shape = "Block", blinking = "On"}
 vi_mode_style = { shape = "Block", blinking = "On" }
-cursor = { style = "Block", blinking = "On" }
 [mouse]
-hide_when_typing = false
+hide_when_typing = true
 
 [keyboard]
 bindings = [
