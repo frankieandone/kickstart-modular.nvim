@@ -14,16 +14,14 @@ shopt -s dotglob
 
 . "$HOME/.cargo/env"
 
-. "$HOME/dotfilesx/aliases"
-
-for file in "$HOME/dotfilesx/fn/*"; do
-    . "$file"
+for file in "${HOME}"/dotfilesx/fn/*; do
+    . "${file}"
 done
 
 #if not running interactively, return.
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 HISTDUP=erase
