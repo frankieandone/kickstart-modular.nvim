@@ -14,8 +14,6 @@ shopt -s dotglob
 
 . "$HOME/.cargo/env"
 
-. "${HOME}/dotfilesx/aliases"
-
 for file in "${HOME}"/dotfilesx/fn/*; do
     . "${file}"
 done

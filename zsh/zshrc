@@ -64,7 +64,11 @@ if [[ "$(uname -s)" == "Linux" ]]; then
     export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     export PATH="/usr/local/bin:${PATH}"
+<<<<<<< HEAD
+# fi
+=======
 fi
+>>>>>>> aed46477ccac0f49e4e2240ce35131f76f47bd6e
 #----------------------------------------------------------------------------------------------
 #NOTE: editor
 TERM=xterm-256color

@@ -422,4 +422,5 @@ zsdoc/data
 # incase this decision is overturned.
 #-------------------------------------------------------------------------------
 *
-!/.gitkeep
+!.gitignore
+!.gitkeep
