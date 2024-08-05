@@ -226,16 +226,16 @@ if ! command -v alacritty 2>&1 >/dev/null; then
     scdoc < extra/man/alacritty-bindings.5.scd | gzip -c | \
         sudo tee /usr/local/share/man/man5/alacritty-bindings.5.gz > /dev/null
 
-    # ZSH_COMPLETIONS="${DOTFILES}/zsh/completions"
-    # echo 'fpath+=${ZSH_COMPLETIONS}' >> ~/.zshrc
-    # cp extra/completions/_alacritty ${ZSH_COMPLETIONS}/_alacritty
-    # unset ZSH_COMPLETIONS
+    ZSH_COMPLETIONS="${DOTFILES}/zsh/completions"
+    echo 'fpath+=${ZSH_COMPLETIONS}' >> "${HOME}/.zshrc"
+    cp extra/completions/_alacritty ${ZSH_COMPLETIONS}/_alacritty
+    unset ZSH_COMPLETIONS
 
-    # BASH_COMPLETIONS="${DOTFILES}/bash/completions"
-    # mkdir -p "${BASH_COMPLETIONS}"
-    # cp extra/completions/alacritty.bash "${BASH_COMPLETIONS}/alacritty"
-    # echo "source ${BASH_COMPLETIONS}/alacritty" >> "${DOTFILES}/bash/.bashrc"
-    # unset BASH_COMPLETIONS
+    BASH_COMPLETIONS="${DOTFILES}/bash/completions"
+    mkdir -p "${BASH_COMPLETIONS}"
+    cp extra/completions/alacritty.bash "${BASH_COMPLETIONS}/alacritty"
+    echo 'source "${BASH_COMPLETIONS}/alacritty"' >> "${HOME}/.bashrc"
+    unset BASH_COMPLETIONS
 
     cd "$previous_dir"
     unset previous_dir
