@@ -1,11 +1,7 @@
-import = [
-    "~/dotfilesx/alacritty/alacritty.toml",
-]
-
 live_config_reload = true
 
 [font]
-size = 11.5
+size = 10.0
 [font.normal]
 family = "FiraCode Nerd Font"
 [font.italic]
@@ -14,18 +10,76 @@ family = "FiraCode Nerd Font"
 family = "FiraCode Nerd Font"
 
 [window]
-decorations = 'Full'
-decorations_theme_variant = 'Dark'
-blur = true
+decorations = "Full"
+decorations_theme_variant = "Dark"
 opacity = 1
-[window.padding]
-y = 20
-x = 20
 [window.dimensions]
 columns = 101
-lines = 35
+lines = 40
+
+[colors]
+[colors.primary]
+background = "0x0a0c10"
+foreground = "0xf0f3f6"
+
+[colors.cursor]
+text = "0x0a0c10"
+cursor = "0xf0f3f6"
+
+[colors.normal]
+black = "0x7a828e"
+red = "0xff9492"
+green = "0x26cd4d"
+yellow = "0xf0b72f"
+blue = "0x71b7ff"
+magenta = "0xcb9eff"
+cyan = "0x39c5cf"
+white = "0xd9dee3"
+
+[colors.bright]
+black = "0x9ea7b3"
+red = "0xffb1af"
+green = "0x4ae168"
+yellow = "0xf7c843"
+blue = "0x91cbff"
+magenta = "0xcb9eff"
+cyan = "0x39c5cf"
+white = "0xd9dee3"
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+blink_interval = 1
+blink_timeout = 0
+unfocused_hollow = true
+thickness = 0.15
+vi_mode_style = { shape = "Block", blinking = "On" }
+cursor = { style = "Block", blinking = "On" }
+[mouse]
+hide_when_typing = false
 
 [keyboard]
 bindings = [
-  { key = "N", mods = "Control|Shift", action = "CreateNewWindow" }
+    { key = "=", mods = "Control|Alt", action = "ToggleViMode" },
+    { key = "w", mods = "Super", action = "Quit" },
+    { key = "t", mods = "Super", action = "CreateNewTab" },
+    { key = "n", mods = "Super", action = "CreateNewWindow" },
+    { key = "k", mods = "Super", action = "ClearHistory" },
+    { key = "Tab", mods = "Super", action = "SelectNextTab" },
+    { key = "Tab", mods = "Super|Shift", action = "SelectPreviousTab" },
+    { key = "1", mods = "Super", action = "SelectTab1" },
+    { key = "2", mods = "Super", action = "SelectTab2" },
+    { key = "3", mods = "Super", action = "SelectTab3" },
+    { key = "4", mods = "Super", action = "SelectTab4" },
+    { key = "5", mods = "Super", action = "SelectTab5" },
+    { key = "6", mods = "Super", action = "SelectTab6" },
+    { key = "7", mods = "Super", action = "SelectTab7" },
+    { key = "8", mods = "Super", action = "SelectTab8" },
+    { key = "9", mods = "Super", action = "SelectLastTab" },
 ]
+
+[debug]
+log_level = "Error"
+persistent_logging = false
+print_events = false
