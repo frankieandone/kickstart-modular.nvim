@@ -137,15 +137,25 @@ zinit ice wait
 zinit snippet OMZP::sudo
 #----------------------------------------------------------------------------------------------
 ALACRITTY_HOME="${DOTFILES}/alacritty"
-export ALACRITTY_CONFIG="${DOTFILES}/alacritty/alacritty.toml"
+ALACRITTY_CONFIG_MACOS="${DOTFILES}/alacritty/alacritty-macos.toml"
+ALACRITTY_CONFIG_LINUX="${DOTFILES}/alacritty/alacritty-linux.toml"
+if [[ "$(uname -s)" == "Linux" ]]; then
+    ALACRITTY_CONFIG="${ALACRITTY_CONFIG_LINUX}"
+elif [[ "$(uname -s)" == "Darwin" ]]; then
+    ALACRITTY_CONFIG="${ALACRITTY_CONFIG_MACOS}"
+fi
+export ALACRITTY_CONFIG
 ALACRITTY_DESKTOP="${DOTFILES}/alacritty/Alacritty.desktop"
+
 
 if [[ "$(uname -s)" == "Linux" ]] && ! command -v alacritty &> /dev/null; then
     read -r "res?Do you want to remove the existing Alacritty installation? [y/N] "
     if [ "${res[1]}" = "y" ] || [ "$res" = "Y" ]; then
         if [ -f "${ALACRITTY_CONFIG}" ]; then
-            mv -v "$ALACRITTY_CONFIG" "${DOTFILES}"
-            alacritty_config_tmp="${DOTFILES}/$(basename "$ALACRITTY_CONFIG")"
+            mv -v "$ALACRITTY_CONFIG_MACOS" "${DOTFILES}"
+            mv -v "$ALACRITTY_CONFIG_LINUX" "${DOTFILES}"
+            alacritty_config_macos="${DOTFILES}/$(basename "$ALACRITTY_CONFIG_MACOS")"
+            alacritty_config_linux="${DOTFILES}/$(basename "$ALACRITTY_CONFIG_LINUX")"
         fi
         if [ -f "$ALACRITTY_DESKTOP" ]; then
             mv -v "$ALACRITTY_DESKTOP" "${DOTFILES}"
@@ -156,8 +166,10 @@ if [[ "$(uname -s)" == "Linux" ]] && ! command -v alacritty &> /dev/null; then
         git clone --depth=1 https://github.com/alacritty/alacritty.git "${ALACRITTY_HOME}"
         rm -rf .git
 
-        [ -f "$alacritty_config_tmp" ] && mv -fv "$alacritty_config_tmp" "${ALACRITTY_CONFIG}"
-        unset alacritty_config_tmp
+        [ -f "$alacritty_config_macos" ] && mv -fv "$alacritty_config_macos" "${ALACRITTY_CONFIG_MACOS}"
+        [ -f "$alacritty_config_linux" ] && mv -fv "$alacritty_config_linux" "${ALACRITTY_CONFIG_LINUX}"
+        unset alacritty_config_macos
+        unset alacritty_config_linux
         [ -f "$alacritty_desktop_tmp" ] && mv -fv "$alacritty_desktop_tmp" "${ALACRITTY_DESKTOP}"
         unset alacritty_desktop_tmp
     fi
