@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 #----------------------------------------------------------------------------------------------
+#
 umask 077
 #----------------------------------------------------------------------------------------------
 setopt extendedglob
@@ -125,6 +126,8 @@ zinit ice wait
 zinit light zsh-users/zsh-completions
 zinit ice wait
 zinit light MichaelAquilina/zsh-you-should-use
+zinit ice wait
+zinit light wfxr/forgit
 
 # zinit snippet <URL>        # Raw Syntax with URL
 # zinit snippet OMZ::<PATH>  # Shorthand OMZ/ (https://github.com/ohmyzsh/ohmyzsh/raw/master/)
@@ -253,21 +256,6 @@ if [[ "$(uname -s)" == "Linux" ]] && ! command -v alacritty &> /dev/null; then
     unset previous_dir
 fi
 #----------------------------------------------------------------------------------------------
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-
-HISTSIZE=10000
-HISTFILE=~/.zsh_history
-SAVEHIST=$HISTSIZE
-HISTDUP=erase
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space #use a <SPACE> prefix to not save into command into history
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
-
-
 if [ ! command -v fzf &> /dev/null ]; then
     brew install fzf
 fi
@@ -286,6 +274,17 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*': fzf-preview 'ls --color $realpath'
 
+HISTSIZE=10000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space #use a <SPACE> prefix to not save into command into history
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
 #ctrl+r, ctrl+p, ctrl+n,
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
@@ -293,3 +292,12 @@ eval "$(starship init zsh)"
 
 source "${DOTFILES}/aliases"
 
+function fzf_file() {
+    selected_file=$(fzf --preview '([[ -f {} ]] && (bat --style=numbers --colors=always {} || cat {})) ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2>/dev/null | head -200')
+    if [[ -n "$selected_file" && -e $selected_file ]]; then
+        nvim -o "$selected_file"
+    fi
+}
+
+bindkey '^/' history-search-backward
+bindkey -s '^O' 'fzf_file\n'

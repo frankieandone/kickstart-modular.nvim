@@ -1,7 +1,7 @@
 live_config_reload = true
 
 [font]
-size = 10.0
+size = 12.0
 [font.normal]
 family = "FiraCode Nerd Font"
 [font.italic]
@@ -58,26 +58,6 @@ style = { shape = "Block", blinking = "On"}
 vi_mode_style = { shape = "Block", blinking = "Always" }
 [mouse]
 hide_when_typing = true
-
-[keyboard]
-bindings = [
-    { key = "=", mods = "Control|Alt", action = "ToggleViMode" },
-    { key = "w", mods = "Super", action = "Quit" },
-    { key = "t", mods = "Super", action = "CreateNewTab" },
-    { key = "n", mods = "Super", action = "CreateNewWindow" },
-    { key = "k", mods = "Super", action = "ClearHistory" },
-    { key = "Tab", mods = "Super", action = "SelectNextTab" },
-    { key = "Tab", mods = "Super|Shift", action = "SelectPreviousTab" },
-    { key = "1", mods = "Super", action = "SelectTab1" },
-    { key = "2", mods = "Super", action = "SelectTab2" },
-    { key = "3", mods = "Super", action = "SelectTab3" },
-    { key = "4", mods = "Super", action = "SelectTab4" },
-    { key = "5", mods = "Super", action = "SelectTab5" },
-    { key = "6", mods = "Super", action = "SelectTab6" },
-    { key = "7", mods = "Super", action = "SelectTab7" },
-    { key = "8", mods = "Super", action = "SelectTab8" },
-    { key = "9", mods = "Super", action = "SelectLastTab" },
-]
 
 [debug]
 log_level = "Error"

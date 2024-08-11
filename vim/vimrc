@@ -1,5 +1,7 @@
 colorscheme habamax
-set termguicolors
+if $TERM_PROGRAM !~ "Apple_Terminal"	
+    set termguicolors
+endif
 set background=dark
 syntax on
 
@@ -39,7 +41,7 @@ set formatoptions+=t
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-set noexpandtab
+set expandtab
 set autoindent
 set autoread
 set backspace=indent,eol,start
@@ -50,11 +52,8 @@ set incsearch
 set hlsearch
 
 set mouse=a
+set undodir=~/dotfilesx/vim/undodir
 set undofile
-if !isdirectory($HOME."dotfilesx/vim/undodir")
-	call mkdir($HOME."dotfilesx/vim/undodir", "", 077)
-endif
-set undofiledir=$HOME/dotfilesx/vim/undodir
 if has("unix")
     let s:uname = system("uname -s")
 	if s:uname == "Darwin"

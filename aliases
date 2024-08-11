@@ -1,18 +1,77 @@
-#!/bin/sh
+#!c/bin/sh
 #POSIX-compliant for sourcing from sh, bash, zsh
 
-alias down='"$HOME/downloads"'
-alias desk='"$HOME"/desktop"'
+desk() {
+    file="${HOME}/desktop"
+    cd "$file"
+}
 
-alias pragma='"$HOME/pragma"'
-alias srs='"$HOME/srs"'
+dot() {
+    file="${HOME}/dotfilesx"
+    cd "$file"
+}
+
+down() {
+    file="${HOME}/downloads"
+    cd "$file"
+}
+
+hack() {
+    file="${HOME}/hack"
+    cd "$file"
+}
+
+pragma() {
+    file="${HOME}/pragma"
+    cd "$file"
+}
+
+srs() {
+    file="${HOME}/srs"
+    cd "$file"
+}
+
+app_support() {
+    file="${HOME}/Library/Application\ Support"
+    cd "$file"
+}
+
+unset file
 
 alias rm='rm -i'
-alias l='ls --color'
-alias ll='ls -AlF'
+
+l() {
+    ls --color
+}
+
+ll() {
+    ls -AlF
+}
+
+lx() {
+    #@ shows extended attributes [metatdata beyond file attrs] (xattr -l)
+    ls -Al@ --color
+}
+
+le() {
+    #e shows ACLs (Access Control Lists) [extra file permissions] (macos-specific)
+    ls -AlFe --color
+}
+
+lxe() {
+    ls -Al@e --color
+}
+
+lex() {
+    ls -Al@e --color
+}
+
+ld() {
+    ls -dl --color */
+}
 
 rl() {
-    shell="$(ps -p $$ -o 'comm=')"
+    shell="$(ps -p $$ -o comm=)"
     case "$shell" in
     *zsh*)
         . "${HOME}/.zshrc"
@@ -30,3 +89,5 @@ rl() {
     echo "Reloaded $shell"
     unset shell
 }
+
+
