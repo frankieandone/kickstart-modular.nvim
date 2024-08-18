@@ -21,6 +21,14 @@ hack() {
     cd "$file"
 }
 
+play() {
+    file="${HOME}/play"
+    if [[ ! -d "$file" ]]; then
+        mkdir -p "$file"
+    fi
+    cd "$file"
+}
+
 pragma() {
     file="${HOME}/pragma"
     cd "$file"
@@ -39,35 +47,36 @@ app_support() {
 unset file
 
 alias rm='rm -i'
+alias ls='ls --color'
 
 l() {
-    ls --color
+    ls "$@"
 }
 
 ll() {
-    ls -AlF
+    ls -AlF "$@"
 }
 
 lx() {
     #@ shows extended attributes [metatdata beyond file attrs] (xattr -l)
-    ls -Al@ --color
+    ls -Al@ "$@"
 }
 
 le() {
     #e shows ACLs (Access Control Lists) [extra file permissions] (macos-specific)
-    ls -AlFe --color
+    ls -AlFe "$@" 
 }
 
 lxe() {
-    ls -Al@e --color
+    ls -Al@e "$@"
 }
 
 lex() {
-    ls -Al@e --color
+    ls -Al@e "$@"
 }
 
 ld() {
-    ls -dl --color */
+    ls -dl "$@" */
 }
 
 rl() {

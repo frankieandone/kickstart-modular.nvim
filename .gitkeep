@@ -2,12 +2,13 @@ alacritty
 bash
 fn
 hyper
-kickstart
-kickstart-modular
-nvchad
+ideavim
+#kickstart
+#kickstart-modular
+#nvchad
 nvim
 sh
-starship
+#starship
 vim
 zsh
 .editorconfig
@@ -16,4 +17,3 @@ zsh
 README.md
 aliases
 init.sh
-

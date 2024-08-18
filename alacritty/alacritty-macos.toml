@@ -1,0 +1,65 @@
+live_config_reload = true
+
+[font]
+size = 12.0
+[font.normal]
+family = "FiraCode Nerd Font"
+[font.italic]
+family = "FiraCode Nerd Font"
+[font.bold]
+family = "FiraCode Nerd Font"
+
+[window]
+decorations = "Full"
+decorations_theme_variant = "auto"
+opacity = 1
+[window.dimensions]
+columns = 101
+lines = 40
+
+[colors]
+[colors.primary]
+background = "0x0a0c10"
+foreground = "0xf0f3f6"
+
+[colors.cursor]
+text = "0x0a0c10"
+cursor = "0xf0f3f6"
+
+[colors.normal]
+black = "0x7a828e"
+red = "0xff9492"
+green = "0x26cd4d"
+yellow = "0xf0b72f"
+blue = "0x71b7ff"
+magenta = "0xcb9eff"
+cyan = "0x39c5cf"
+white = "0xd9dee3"
+
+[colors.bright]
+black = "0x9ea7b3"
+red = "0xffb1af"
+green = "0x4ae168"
+yellow = "0xf7c843"
+blue = "0x91cbff"
+magenta = "0xcb9eff"
+cyan = "0x39c5cf"
+white = "0xd9dee3"
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+blink_interval = 500
+blink_timeout = 0
+unfocused_hollow = true
+thickness = 0.15
+style = { shape = "Block", blinking = "On"}
+vi_mode_style = { shape = "Block", blinking = "Always" }
+[mouse]
+hide_when_typing = true
+
+[debug]
+log_level = "Error"
+persistent_logging = false
+print_events = false

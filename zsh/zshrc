@@ -68,21 +68,14 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 fi
 #----------------------------------------------------------------------------------------------
 #NOTE: editor
-TERM=xterm-256color
+export TERM=xterm-256color
 EDITOR="vi"
 if (nvim -v &>/dev/null); then
-if [ ! -d "${DOTFILES}/nvim" ]; then
-    git clone git@github.com/frankieandone/kickstart "${DOTFILES}/kickstart"
-        res=$?
-    if [ $res -ne 0 ]; then
-        git clone --depth=1 https://github.com/nvim-lua/kickstart.nvim "${DOTFILES}/kickstart"
+    if [[ ! -e "${DOTFILES}/nvim" ]] && [[ ! -d "${DOTFILES}/nvim" ]]; then
+        git clone git@github.com:frankieandone/kickstart-modular.nvim.git "${DOTFILES}/kickstart-modular"
+        ln -sfv "${DOTFILES}/kickstart-modular" "${DOTFILES}/nvim"
     fi
-ln -sfv "${DOTFILES}/kickstart" "${DOTFILES}/nvim"
 fi
-else
-    brew install nvim
-fi
-
 export EDITOR="nvim"
 
 alias conf="cd ${DOTFILES} && $EDITOR ."
@@ -91,12 +84,20 @@ alias vconf="cd $${DOTFILES}/nvim && $EDITOR ."
 #----------------------------------------------------------------------------------------------
 #NOTE: votla, node, pnpm
 if ! (volta -v &>/dev/null); then
-    brew install volta && \
+    brew install curl && \
+    curl https://get.volta.sh | bash && \
     volta install node@latest && \
     volta install pnpm@latest
 fi
 export VOLTA_HOME="${HOME}/.volta"
 export PATH="$VOLTA_HOME/bin:${PATH+:$PATH}"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    export PNPM_HOME="${HOME}/Library/pnpm"
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+fi
 #----------------------------------------------------------------------------------------------
 #NOTE: rustup, rustc, cargo
 if [ ! -d "${HOME}/.cargo" ]; then
@@ -128,6 +129,12 @@ zinit ice wait
 zinit light MichaelAquilina/zsh-you-should-use
 zinit ice wait
 zinit light wfxr/forgit
+
+# Zsh:
+# ~/.zshrc:
+[ -f $HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh ] && source $HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh
+
+#
 
 # zinit snippet <URL>        # Raw Syntax with URL
 # zinit snippet OMZ::<PATH>  # Shorthand OMZ/ (https://github.com/ohmyzsh/ohmyzsh/raw/master/)

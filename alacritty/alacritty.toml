@@ -1,7 +1,11 @@
+import = [
+    "$HOME/dotfilesx/alacritty/alacritty-theme/themes/base16_default_dark.toml"
+]
+
 live_config_reload = true
 
 [font]
-size = 12.0
+size = 13.0
 [font.normal]
 family = "FiraCode Nerd Font"
 [font.italic]
@@ -17,34 +21,13 @@ opacity = 1
 columns = 101
 lines = 40
 
-[colors]
 [colors.primary]
-background = "0x0a0c10"
-foreground = "0xf0f3f6"
+background = "#080808"
+foreground = "#ffffff"
 
 [colors.cursor]
-text = "0x0a0c10"
-cursor = "0xf0f3f6"
-
-[colors.normal]
-black = "0x7a828e"
-red = "0xff9492"
-green = "0x26cd4d"
-yellow = "0xf0b72f"
-blue = "0x71b7ff"
-magenta = "0xcb9eff"
-cyan = "0x39c5cf"
-white = "0xd9dee3"
-
-[colors.bright]
-black = "0x9ea7b3"
-red = "0xffb1af"
-green = "0x4ae168"
-yellow = "0xf7c843"
-blue = "0x91cbff"
-magenta = "0xcb9eff"
-cyan = "0x39c5cf"
-white = "0xd9dee3"
+text = "#080808"
+cursor = "#ffffff"
 
 [selection]
 save_to_clipboard = true

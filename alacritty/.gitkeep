@@ -1,4 +1,8 @@
 Alacritty.desktop
 alacritty.toml
+alacritty-macos.toml
+alacritty-linux.toml
+alacritty-themes
 extra/logo/patched/Alacritty.png
+README.md
 

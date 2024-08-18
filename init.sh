@@ -29,6 +29,7 @@ brew reinstall zinit \
     rustup \
     starship
 brew doctor
+brew autoclean
 
 volta install node@latest && volta install pnpm@latest
 

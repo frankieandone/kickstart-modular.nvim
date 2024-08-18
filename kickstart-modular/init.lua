@@ -107,3 +107,6 @@ require 'lazy-plugins'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+-- NOTE: install 256_noir using git clone https://github.com/andreasvc/vim-256noir.git and copy
+-- over into "${XDG_CONFIG_HOME:-${HOME}/nvim/colors/256_noir.vim}" or https --download https://github.com/andreasvc/vim-256noir/blob/e8668a18a4a90272c1cae87e655f8bddc5ac3665/colors/256_noir.vim  into the same aforementioned file uri
+vim.cmd 'colorscheme 256_noir'
