@@ -55,6 +55,7 @@ require('lazy').setup({
     require 'plugins.null-ls',
     require 'plugins.grug-far',
     require 'plugins.trouble',
+    require 'plugins.nvim-colorizer',
     -- require 'plugins.neo-tree', --use nvim-tree instead
 
     -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
