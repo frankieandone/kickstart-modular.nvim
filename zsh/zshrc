@@ -83,21 +83,21 @@ alias zconf="cd ${DOTFILES}/zsh && $EDITOR ."
 alias vconf="cd $${DOTFILES}/nvim && $EDITOR ."
 #----------------------------------------------------------------------------------------------
 #NOTE: votla, node, pnpm
-if ! (volta -v &>/dev/null); then
-    brew install curl && \
-    curl https://get.volta.sh | bash && \
-    volta install node@latest && \
-    volta install pnpm@latest
-fi
-export VOLTA_HOME="${HOME}/.volta"
-export PATH="$VOLTA_HOME/bin:${PATH+:$PATH}"
-if [[ "$(uname -s)" == "Darwin" ]]; then
-    export PNPM_HOME="${HOME}/Library/pnpm"
-    case ":$PATH:" in
-      *":$PNPM_HOME:"*) ;;
-      *) export PATH="$PNPM_HOME:$PATH" ;;
-    esac
-fi
+# if ! (volta -v &>/dev/null); then
+#     brew install curl && \
+#     curl https://get.volta.sh | bash && \
+#     volta install node@latest && \
+#     volta install pnpm@latest
+# fi
+# export VOLTA_HOME="${HOME}/.volta"
+# export PATH="$VOLTA_HOME/bin:${PATH+:$PATH}"
+# if [[ "$(uname -s)" == "Darwin" ]]; then
+#     export PNPM_HOME="${HOME}/Library/pnpm"
+#     case ":$PATH:" in
+#       *":$PNPM_HOME:"*) ;;
+#       *) export PATH="$PNPM_HOME:$PATH" ;;
+#     esac
+# fi
 #----------------------------------------------------------------------------------------------
 #NOTE: rustup, rustc, cargo
 if [ ! -d "${HOME}/.cargo" ]; then
@@ -308,3 +308,6 @@ function fzf_file() {
 
 bindkey '^/' history-search-backward
 bindkey -s '^O' 'fzf_file\n'
+
+#use for testing release candidates before deloying on production server
+alias runpreprod='cd ~/srs/mindhuntr && pnpm prod:build && cd ~/srs/mindhuntr/build && ENV_PATH=~/srs/mindhuntr/etc/mindhuntr/.env node server.js'

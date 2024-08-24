@@ -62,4 +62,16 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 20
 
--- vim: ts=2 sts=2 sw=2 et
+vim.g.editorconfig = true
+
+vim.opt.tabstop = 4 -- Number of spaces a <Tab> represents
+vim.opt.softtabstop = 4 -- Number of spaces for <Tab> in insert mode (0 = use tabstop)
+vim.opt.shiftwidth = 4 -- Number of spaces for each auto-indent step
+vim.opt.expandtab = true -- Use spaces instead of tabs
+vim.opt.autoindent = true -- Copy indent from the current line
+vim.opt.smartindent = true -- Smart indentation for programming
+vim.opt.smarttab = true -- Align tabs with spaces (requires softtabstop)
+vim.opt.copyindent = false -- Do not copy the existing indentation
+vim.opt.preserveindent = false -- Do not preserve the existing indentation
+vim.opt.shiftround = true -- Round indentation to the nearest shiftwidth
+vim.opt.backspace = { 'indent', 'eol', 'start' } -- Allow backspacing over indent, eol, and start

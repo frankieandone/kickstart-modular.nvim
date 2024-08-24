@@ -1,6 +1,4 @@
-import = [
-    "~/dotfilesx/alacritty/noir.toml"
-]
+import = ["~/dotfilesx/alacritty/noir.toml"]
 
 live_config_reload = true
 
@@ -12,6 +10,10 @@ family = "FiraCode Nerd Font"
 family = "FiraCode Nerd Font"
 [font.bold]
 family = "FiraCode Nerd Font"
+
+[shell]
+program = "/opt/homebrew/bin/tmux"
+args = ["new-session", "-A", "-s", "default"]
 
 [window]
 decorations = "Full"
@@ -37,7 +39,7 @@ blink_interval = 500
 blink_timeout = 0
 unfocused_hollow = true
 thickness = 0.15
-style = { shape = "Block", blinking = "On"}
+style = { shape = "Block", blinking = "On" }
 vi_mode_style = { shape = "Block", blinking = "Always" }
 [mouse]
 hide_when_typing = true
@@ -46,3 +48,34 @@ hide_when_typing = true
 log_level = "Error"
 persistent_logging = false
 print_events = false
+
+
+[keyboard]
+bindings = [
+  #\u0002 is Ctrl in unicode
+  #NOTE: do not use xxd -psd that generates hex codes and alacritty.toml accepts unicode
+  #NOTE: use unicode instead of hex codes (prefixed by \x or b (byte sequences))
+  #NOTE: '\x02\x78' means 'ctrl' + 'b' in escaped hex codes (macos)
+  #NOTE: "\x02\x78" produces invalid escape sequence in alacritty.toml (macos)
+  { key = "T", mods = "Command", chars = "\u0002c" },        #[tmux] new tab
+  { key = "W", mods = "Command", chars = "\u0002x" },        #[tmux] close pane
+  { key = "D", mods = "Command", chars = "\u0002%" },        #[tmux] split right
+  { key = "D", mods = "Command|Shift", chars = "\u0002\"" }, #[tmux] split down
+  { key = "H", mods = "Command", chars = "\u0002h" },
+  { key = "J", mods = "Command", chars = "\u0002j" },
+  { key = "K", mods = "Command", chars = "\u0002k" },
+  { key = "L", mods = "Command", chars = "\u0002l" },
+  { key = "Key1", mods = "Command", chars = "\u00021" },
+  { key = "Key2", mods = "Command", chars = "\u00022" },
+  { key = "Key3", mods = "Command", chars = "\u00023" },
+  { key = "Key4", mods = "Command", chars = "\u00024" },
+  { key = "Key5", mods = "Command", chars = "\u00025" },
+  { key = "Key6", mods = "Command", chars = "\u00026" },
+  { key = "Key7", mods = "Command", chars = "\u00027" },
+  { key = "Key8", mods = "Command", chars = "\u00028" },
+  { key = "Key9", mods = "Command", chars = "\u00029" },
+  { key = "Left", mods = "Command", chars = "\u0002H" },
+  { key = "Down", mods = "Command", chars = "\u0002J" },
+  { key = "Up", mods = "Command", chars = "\u0002K" },
+  { key = "Right", mods = "Command", chars = "\u0002L" },
+]
