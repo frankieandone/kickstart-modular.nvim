@@ -30,7 +30,6 @@ require('lazy').setup({
     require 'plugins.gitsigns',
 
     require 'plugins.lspconfig',
-    require 'plugins.conform',
     require 'plugins.cmp',
 
     require 'plugins.which-key',

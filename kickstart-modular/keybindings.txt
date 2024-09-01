@@ -1,0 +1,184 @@
+Mode: n
+<Esc> -> <Cmd>nohlsearch<CR>
+ sgf -> :Neogit<CR> ([S]earch [g]it [f]iles)
+ sn -> function: 0x0102cd2b18 ([S]earch [N]eovim files)
+ s/ -> function: 0x0102cd2598 ([S]earch [/] in Open Files)
+ / -> function: 0x0102cd1fe0 ([/] Fuzzily search in current buffer)
+   -> function: 0x0102ccc8d8 ([ ] Find existing buffers)
+ s. -> function: 0x0102cce0e8 ([S]earch Recent Files ("." for repeat))
+ sd -> function: 0x0102ccdcc8 ([S]earch [D]iagnostics)
+ sg -> function: 0x0102ccdc18 ([S]earch by [G]rep)
+ sw -> function: 0x0102ccda08 ([S]earch current [W]ord)
+ ss -> function: 0x0102cce3a8 ([S]earch [S]elect Telescope)
+ sf -> function: 0x0102ccd748 ([S]earch [F]iles)
+ sk -> function: 0x0102cce198 ([S]earch [K]eymaps)
+ sh -> function: 0x0102cce7c8 ([S]earch [H]elp)
+ sT -> function: 0x01027adab0 (Todo/Fix/Fixme)
+ st -> function: 0x01027ac490 (Todo)
+ xT -> function: 0x01027abbb8 (Todo/Fix/Fixme (Trouble))
+ xt -> function: 0x01027ab2b8 (Todo (Trouble))
+ f -> function: 0x01027a5cb0 ([F]ormat buffer)
+ xQ -> function: 0x010279f520 (Quickfix List (Trouble))
+ xL -> function: 0x010279eb70 (Location List (Trouble))
+ cS -> function: 0x010279e290 (LSP references/definitions/... (Trouble))
+ cs -> function: 0x010279d9b0 (Symbols (Trouble))
+ xX -> function: 0x010279d050 (Buffer Diagnostics (Trouble))
+ xx -> function: 0x010279c1b8 (Diagnostics (Trouble))
+ sr -> function: 0x0102ccc6c8 ([S]earch [R]esume)
+ q -> function: 0x01026d8c78 (Open diagnostic [Q]uickfix list)
+% -> <Plug>(MatchitNormalForward)
+& -> :&&<CR> (:help &-default)
+Y -> y$ (:help Y-default)
+[% -> <Plug>(MatchitNormalMultiBackward)
+[t -> function: 0x01027ae500 (Previous Todo Comment)
+[q -> function: 0x010279fe90 (Previous Trouble/Quickfix Item)
+[d -> function: 0x0102663980 (Jump to the previous diagnostic)
+\ -> :lua FocusOrToggleNvimTree()<CR> (Focus if unfocused, otherwise toggle NvimTree)
+]% -> <Plug>(MatchitNormalMultiForward)
+]t -> function: 0x01027acfc0 (Next Todo Comment)
+]q -> function: 0x010279b8c0 (Next Trouble/Quickfix Item)
+]d -> function: 0x0102660c00 (Jump to the next diagnostic)
+g% -> <Plug>(MatchitNormalBackward)
+g] -> function: 0x01029ae9f8 (Move to right "around")
+g[ -> function: 0x010289d718 (Move to left "around")
+gcA -> function: 0x01027d7880 (Comment insert end of line)
+gcO -> function: 0x01027d7210 (Comment insert above)
+gco -> function: 0x01028e3a28 (Comment insert below)
+gbc -> function: 0x010272e0e8 (Comment toggle current block)
+gb -> <Plug>(comment_toggle_blockwise) (Comment toggle blockwise)
+gcc -> function: 0x01028cd130 (Comment toggle current line)
+gc -> <Plug>(comment_toggle_linewise) (Comment toggle linewise)
+gx -> function: 0x0102660308 (Opens filepath or URI under cursor with the system handler (file explorer, web browser, …))
+shn -> function: 0x01028d1b78 (Highlight next surrounding)
+sFn -> function: 0x01028d10b8 (Find next left surrounding)
+sfn -> function: 0x01028d05f8 (Find next right surrounding)
+srn -> function: 0x01028cfb60 (Replace next surrounding)
+sdn -> function: 0x01029b3678 (Delete next surrounding)
+shl -> function: 0x01029b2bb8 (Highlight previous surrounding)
+sFl -> function: 0x01029b2120 (Find previous left surrounding)
+sfl -> function: 0x01027d9e70 (Find previous right surrounding)
+srl -> function: 0x01027d93d8 (Replace previous surrounding)
+sdl -> function: 0x01027d88a8 (Delete previous surrounding)
+sn -> function: 0x01028d4890 (Update `MiniSurround.config.n_lines`)
+sh -> function: 0x01029a95f8 (Highlight surrounding)
+sF -> function: 0x01029a8b60 (Find left surrounding)
+sf -> function: 0x010293e680 (Find right surrounding)
+sr -> function: 0x010293dbe8 (Replace surrounding)
+sd -> function: 0x010293d150 (Delete surrounding)
+sa -> function: 0x01028f9250 (Add surrounding)
+<Plug>(MatchitNormalMultiForward) -> :<C-U>call matchit#MultiMatch("W",  "n")<CR>
+<Plug>(MatchitNormalMultiBackward) -> :<C-U>call matchit#MultiMatch("bW", "n")<CR>
+<Plug>(MatchitNormalBackward) -> :<C-U>call matchit#Match_wrapper('',0,'n')<CR>
+<Plug>(MatchitNormalForward) -> :<C-U>call matchit#Match_wrapper('',1,'n')<CR>
+<Plug>PlenaryTestFile -> :lua require('plenary.test_harness').test_file(vim.fn.expand("%:p"))<CR>
+<Plug>(comment_toggle_blockwise_count) -> function: 0x010291cba8 (Comment toggle blockwise with count)
+<Plug>(comment_toggle_linewise_count) -> function: 0x010291c540 (Comment toggle linewise with count)
+<Plug>(comment_toggle_blockwise_current) -> function: 0x010299f570 (Comment toggle current block)
+<Plug>(comment_toggle_linewise_current) -> function: 0x010299ef08 (Comment toggle current line)
+<Plug>(comment_toggle_blockwise) -> function: 0x0102807088 (Comment toggle blockwise)
+<Plug>(comment_toggle_linewise) -> function: 0x01028069e8 (Comment toggle linewise)
+<C-K> -> <C-W><C-K> (Move focus to the upper window)
+<C-J> -> <C-W><NL> (Move focus to the lower window)
+<C-H> -> <C-W><C-H> (Move focus to the left window)
+<C-W><C-D> -> <C-W>d (Show diagnostics under the cursor)
+<C-W>d -> function: 0x0102663f00 (Show diagnostics under the cursor)
+<C-L> -> <C-W><C-L> (Move focus to the right window)
+
+Mode: i
+<C-W> -> <C-G>u<C-W> (:help i_CTRL-W-default)
+<C-U> -> <C-G>u<C-U> (:help i_CTRL-U-default)
+
+Mode: v
+ sr -> function: 0x0102799360 (Search and Replace)
+# -> function: 0x010265d4b8 (:help v_#-default)
+% -> <Plug>(MatchitVisualForward)
+* -> function: 0x010265cf98 (:help v_star-default)
+@ -> mode() ==# 'V' ? ':normal! @'.getcharstr().'<CR>' : '@' (:help v_@-default)
+Q -> mode() ==# 'V' ? ':normal! @<C-R>=reg_recorded()<CR><CR>' : 'Q' (:help v_Q-default)
+[% -> <Plug>(MatchitVisualMultiBackward)
+]% -> <Plug>(MatchitVisualMultiForward)
+a% -> <Plug>(MatchitVisualTextObject)
+al -> function: 0x01028305c8 (Around last textobject)
+an -> function: 0x010282fb48 (Around next textobject)
+a -> function: 0x010297d128 (Around textobject)
+g% -> <Plug>(MatchitVisualBackward)
+g] -> function: 0x01029ae9f8 (Move to right "around")
+g[ -> function: 0x010289d718 (Move to left "around")
+gb -> <Plug>(comment_toggle_blockwise_visual) (Comment toggle blockwise (visual))
+gc -> <Plug>(comment_toggle_linewise_visual) (Comment toggle linewise (visual))
+gx -> function: 0x01026609b0 (Opens filepath or URI under cursor with the system handler (file explorer, web browser, …))
+il -> function: 0x010283a9f0 (Inside last textobject)
+in -> function: 0x0102839f70 (Inside next textobject)
+i -> function: 0x010297de38 (Inside textobject)
+sa -> :<C-U>lua MiniSurround.add('visual')<CR> (Add surrounding to selection)
+<Plug>(MatchitVisualTextObject) -> <Plug>(MatchitVisualMultiBackward)o<Plug>(MatchitVisualMultiForward)
+<Plug>(MatchitVisualMultiForward) -> :<C-U>call matchit#MultiMatch("W",  "n")<CR>m'gv``
+<Plug>(MatchitVisualMultiBackward) -> :<C-U>call matchit#MultiMatch("bW", "n")<CR>m'gv``
+<Plug>(MatchitVisualBackward) -> :<C-U>call matchit#Match_wrapper('',0,'v')<CR>m'gv``
+<Plug>(MatchitVisualForward) -> :<C-U>call matchit#Match_wrapper('',1,'v')<CR>:if col("''") != col("$") | exe ":normal! m'" | endif<CR>gv``
+<Plug>(comment_toggle_blockwise_visual) -> <Esc><Cmd>lua require("Comment.api").locked("toggle.blockwise")(vim.fn.visualmode())<CR> (Comment toggle blockwise (visual))
+<Plug>(comment_toggle_linewise_visual) -> <Esc><Cmd>lua require("Comment.api").locked("toggle.linewise")(vim.fn.visualmode())<CR> (Comment toggle linewise (visual))
+
+Mode: x
+ sr -> function: 0x0102799360 (Search and Replace)
+# -> function: 0x010265d4b8 (:help v_#-default)
+% -> <Plug>(MatchitVisualForward)
+* -> function: 0x010265cf98 (:help v_star-default)
+@ -> mode() ==# 'V' ? ':normal! @'.getcharstr().'<CR>' : '@' (:help v_@-default)
+Q -> mode() ==# 'V' ? ':normal! @<C-R>=reg_recorded()<CR><CR>' : 'Q' (:help v_Q-default)
+[% -> <Plug>(MatchitVisualMultiBackward)
+]% -> <Plug>(MatchitVisualMultiForward)
+a% -> <Plug>(MatchitVisualTextObject)
+al -> function: 0x01028305c8 (Around last textobject)
+an -> function: 0x010282fb48 (Around next textobject)
+a -> function: 0x010297d128 (Around textobject)
+g% -> <Plug>(MatchitVisualBackward)
+g] -> function: 0x01029ae9f8 (Move to right "around")
+g[ -> function: 0x010289d718 (Move to left "around")
+gb -> <Plug>(comment_toggle_blockwise_visual) (Comment toggle blockwise (visual))
+gc -> <Plug>(comment_toggle_linewise_visual) (Comment toggle linewise (visual))
+gx -> function: 0x01026609b0 (Opens filepath or URI under cursor with the system handler (file explorer, web browser, …))
+il -> function: 0x010283a9f0 (Inside last textobject)
+in -> function: 0x0102839f70 (Inside next textobject)
+i -> function: 0x010297de38 (Inside textobject)
+sa -> :<C-U>lua MiniSurround.add('visual')<CR> (Add surrounding to selection)
+<Plug>(MatchitVisualTextObject) -> <Plug>(MatchitVisualMultiBackward)o<Plug>(MatchitVisualMultiForward)
+<Plug>(MatchitVisualMultiForward) -> :<C-U>call matchit#MultiMatch("W",  "n")<CR>m'gv``
+<Plug>(MatchitVisualMultiBackward) -> :<C-U>call matchit#MultiMatch("bW", "n")<CR>m'gv``
+<Plug>(MatchitVisualBackward) -> :<C-U>call matchit#Match_wrapper('',0,'v')<CR>m'gv``
+<Plug>(MatchitVisualForward) -> :<C-U>call matchit#Match_wrapper('',1,'v')<CR>:if col("''") != col("$") | exe ":normal! m'" | endif<CR>gv``
+<Plug>(comment_toggle_blockwise_visual) -> <Esc><Cmd>lua require("Comment.api").locked("toggle.blockwise")(vim.fn.visualmode())<CR> (Comment toggle blockwise (visual))
+<Plug>(comment_toggle_linewise_visual) -> <Esc><Cmd>lua require("Comment.api").locked("toggle.linewise")(vim.fn.visualmode())<CR> (Comment toggle linewise (visual))
+
+Mode: s
+ sr -> function: 0x0102799360 (Search and Replace)
+
+Mode: o
+% -> <Plug>(MatchitOperationForward)
+[% -> <Plug>(MatchitOperationMultiBackward)
+]% -> <Plug>(MatchitOperationMultiForward)
+al -> function: 0x01028a8590 (Around last textobject)
+an -> function: 0x010283b470 (Around next textobject)
+a -> function: 0x01028ef678 (Around textobject)
+g% -> <Plug>(MatchitOperationBackward)
+g] -> function: 0x01029ae9f8 (Move to right "around")
+g[ -> function: 0x010289d718 (Move to left "around")
+gc -> function: 0x0102662440 (Comment textobject)
+il -> function: 0x0102875460 (Inside last textobject)
+in -> function: 0x01028a9010 (Inside next textobject)
+i -> function: 0x01028f00f8 (Inside textobject)
+<Plug>(MatchitOperationMultiForward) -> :<C-U>call matchit#MultiMatch("W",  "o")<CR>
+<Plug>(MatchitOperationMultiBackward) -> :<C-U>call matchit#MultiMatch("bW", "o")<CR>
+<Plug>(MatchitOperationBackward) -> :<C-U>call matchit#Match_wrapper('',0,'o')<CR>
+<Plug>(MatchitOperationForward) -> :<C-U>call matchit#Match_wrapper('',1,'o')<CR>
+
+Mode: !
+<Plug>(TelescopeFuzzyCommandSearch) -> <C-\>e "lua require('telescope.builtin').command_history { default_text = [=[" . escape(getcmdline(), '"') . "]=] }"<CR><CR>
+<C-W> -> <C-G>u<C-W> (:help i_CTRL-W-default)
+<C-U> -> <C-G>u<C-U> (:help i_CTRL-U-default)
+
+Mode: c
+<Plug>(TelescopeFuzzyCommandSearch) -> <C-\>e "lua require('telescope.builtin').command_history { default_text = [=[" . escape(getcmdline(), '"') . "]=] }"<CR><CR>
+
+Mode: t
+<Esc><Esc> -> <C-\><C-N> (Exit terminal mode)

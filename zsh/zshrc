@@ -91,13 +91,15 @@ alias vconf="cd $${DOTFILES}/nvim && $EDITOR ."
 # fi
 # export VOLTA_HOME="${HOME}/.volta"
 # export PATH="$VOLTA_HOME/bin:${PATH+:$PATH}"
-# if [[ "$(uname -s)" == "Darwin" ]]; then
-#     export PNPM_HOME="${HOME}/Library/pnpm"
-#     case ":$PATH:" in
-#       *":$PNPM_HOME:"*) ;;
-#       *) export PATH="$PNPM_HOME:$PATH" ;;
-#     esac
-# fi
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    export PNPM_HOME="${HOME}/Library/pnpm"
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+    export PATH="$HOME/Library/pnpm:$PATH"
+fi
+#
 #----------------------------------------------------------------------------------------------
 #NOTE: rustup, rustc, cargo
 if [ ! -d "${HOME}/.cargo" ]; then
@@ -312,10 +314,23 @@ bindkey -s '^O' 'fzf_file\n'
 #use for testing release candidates before deloying on production server
 alias runpreprod='cd ~/srs/mindhuntr && pnpm prod:build && cd ~/srs/mindhuntr/build && ENV_PATH=~/srs/mindhuntr/etc/mindhuntr/.env node server.js'
 
-# pnpm
-export PNPM_HOME="/Users/hq/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+#----------------------------------------------------------------------------------------------
+export LIBTORCH='/usr/share/libtorch'
+export LD_LIBRARY_PATH=$LIBTORCH:$LD_LIBRARY_PATH
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/hq/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/hq/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/hq/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/hq/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

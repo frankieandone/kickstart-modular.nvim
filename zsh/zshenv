@@ -1,1 +1,6 @@
 . "$HOME/.cargo/env"
+
+fpath+=$HOME/dotfilesx/zsh/completions
+autoload -Uz compinit
+compinit
+

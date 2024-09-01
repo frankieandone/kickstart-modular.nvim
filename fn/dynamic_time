@@ -1,0 +1,42 @@
+#!/bin/bash
+
+while true; do
+    # Get current terminal size
+    rows=$(tput lines)
+    cols=$(tput cols)
+
+    # Get current time
+    current_time=$(date +"%H:%M:%S")
+
+    # Clear the terminal
+    clear
+
+    # Calculate maximum width available for the figlet output based on terminal width
+    max_width=$((cols - 2)) # Subtract 2 to ensure it fits within the pane with padding
+
+    # Generate ASCII art with figlet
+    output=$(figlet -f colossal "$current_time")
+
+    # Adjust the output width by setting max width, and dynamically resizing figlet text
+    adjusted_output=$(echo "$output" | fold -s -w $max_width)
+
+    # Calculate the number of lines of the adjusted output
+    lines=$(echo "$adjusted_output" | wc -l)
+
+    # Calculate vertical padding to center text vertically
+    padding=$(( (rows - lines) / 2 ))
+
+    # Print vertical padding to center the text
+    for ((i = 0; i < padding; i++)); do
+        echo
+    done
+
+    # Center and print each line of the adjusted output horizontally
+    while IFS= read -r line; do
+        line_length=${#line}
+        printf "%*s\n" $(( (cols + line_length) / 2 )) "$line"
+    done <<< "$adjusted_output"
+
+    # Wait for a second before updating
+    sleep 1
+done
