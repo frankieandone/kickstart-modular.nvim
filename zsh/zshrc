@@ -68,7 +68,7 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 fi
 #----------------------------------------------------------------------------------------------
 #NOTE: editor
-export TERM=xterm-256color
+export TERM='screen-256color'
 EDITOR="vi"
 if (nvim -v &>/dev/null); then
     if [[ ! -e "${DOTFILES}/nvim" ]] && [[ ! -d "${DOTFILES}/nvim" ]]; then
@@ -311,3 +311,11 @@ bindkey -s '^O' 'fzf_file\n'
 
 #use for testing release candidates before deloying on production server
 alias runpreprod='cd ~/srs/mindhuntr && pnpm prod:build && cd ~/srs/mindhuntr/build && ENV_PATH=~/srs/mindhuntr/etc/mindhuntr/.env node server.js'
+
+# pnpm
+export PNPM_HOME="/Users/hq/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

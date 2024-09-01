@@ -20,8 +20,8 @@ decorations = "Full"
 decorations_theme_variant = "Dark"
 opacity = 1
 [window.dimensions]
-columns = 101
-lines = 40
+columns = 140
+lines = 100
 
 [colors.primary]
 background = "#000000"

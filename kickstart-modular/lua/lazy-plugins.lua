@@ -48,7 +48,7 @@ require('lazy').setup({
     --  Here are some example plugins that I've included in the Kickstart repository.
     --  Uncomment any of the lines below to enable them (you will need to restart nvim).
     --
-    require 'plugins.debug',
+    -- require 'plugins.debug',
     require 'plugins.indent_line',
     require 'plugins.lint',
     require 'plugins.autopairs',
@@ -74,5 +74,3 @@ require('lazy').setup({
         icons = vim.g.have_nerd_font and {} or {},
     },
 })
-
--- vim: ts=2 sts=2 sw=2 et
