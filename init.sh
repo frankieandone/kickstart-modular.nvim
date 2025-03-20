@@ -34,3 +34,6 @@ brew autoclean
 volta install node@latest && volta install pnpm@latest
 
 rustup-init -y
+
+mkdir -p $HOME/.config/alacritty && ln -sfv "$DOTFILES/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
+
