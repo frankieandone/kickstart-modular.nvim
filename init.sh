@@ -104,6 +104,24 @@ elif [[ "$IS_LINUX" == true ]]; then
         libssl-dev \
         tmux \
         xclip # Required for clipboard support in tmux
+
+    # Setup Cursor AppImage
+    mkdir -p "$HOME/Applications"
+    if [ ! -f "$HOME/Applications/Cursor.AppImage" ]; then
+        echo "Downloading Cursor AppImage..."
+        curl -L "https://download.cursor.sh/linux/appimage/x64" -o "$HOME/Applications/Cursor.AppImage"
+        chmod +x "$HOME/Applications/Cursor.AppImage"
+    fi
+
+    # Install Cursor desktop file
+    if [ -f "$DOTFILES/cursor/Cursor.desktop" ]; then
+        mkdir -p "$HOME/.local/share/applications"
+        cp "$DOTFILES/cursor/Cursor.desktop" "$HOME/.local/share/applications/"
+        # Update icon path in desktop file
+        sed -i "s|Icon=cursor|Icon=$HOME/Applications/Cursor.AppImage|" "$HOME/.local/share/applications/Cursor.desktop"
+        # Update desktop database
+        update-desktop-database "$HOME/.local/share/applications"
+    fi
 fi
 
 # Install Node.js and pnpm using Volta (cross-platform)
