@@ -3,28 +3,31 @@ live_config_reload = true
 [font]
 size = 12.0
 [font.normal]
-family = "FiraCode Nerd Font"
+family = "JetBrainsMono Nerd Font"
 [font.italic]
-family = "FiraCode Nerd Font"
+family = "JetBrainsMono Nerd Font"
 [font.bold]
-family = "FiraCode Nerd Font"
+family = "JetBrainsMono Nerd Font"
+
+[terminal.shell]
+program = "/opt/homebrew/bin/tmux"
+args = ["new-session", "-A", "-D", "-s", "default"]
 
 [window]
 decorations = "Full"
-decorations_theme_variant = "auto"
+decorations_theme_variant = "Dark"
 opacity = 1
 [window.dimensions]
-columns = 101
-lines = 40
+columns = 140
+lines = 100
 
-[colors]
 [colors.primary]
-background = "0x0a0c10"
-foreground = "0xf0f3f6"
+background = "#000000"
+foreground = "#ffffff"
 
 [colors.cursor]
-text = "0x0a0c10"
-cursor = "0xf0f3f6"
+text = "#080808"
+cursor = "#ffffff"
 
 [colors.normal]
 black = "0x7a828e"
@@ -54,8 +57,9 @@ blink_interval = 500
 blink_timeout = 0
 unfocused_hollow = true
 thickness = 0.15
-style = { shape = "Block", blinking = "On"}
+style = { shape = "Block", blinking = "On" }
 vi_mode_style = { shape = "Block", blinking = "Always" }
+
 [mouse]
 hide_when_typing = true
 
@@ -63,3 +67,28 @@ hide_when_typing = true
 log_level = "Error"
 persistent_logging = false
 print_events = false
+
+[keyboard]
+bindings = [
+  { key = "T", mods = "Command", chars = "\u0002c" },        #[tmux] new tab
+  { key = "W", mods = "Command", chars = "\u0002x" },        #[tmux] close pane
+  { key = "D", mods = "Command", chars = "\u0002%" },        #[tmux] split right
+  { key = "D", mods = "Command|Shift", chars = "\u0002\"" }, #[tmux] split down
+  { key = "H", mods = "Command", chars = "\u0002h" },
+  { key = "J", mods = "Command", chars = "\u0002j" },
+  { key = "K", mods = "Command", chars = "\u0002k" },
+  { key = "L", mods = "Command", chars = "\u0002l" },
+  { key = "Key1", mods = "Command", chars = "\u00021" },
+  { key = "Key2", mods = "Command", chars = "\u00022" },
+  { key = "Key3", mods = "Command", chars = "\u00023" },
+  { key = "Key4", mods = "Command", chars = "\u00024" },
+  { key = "Key5", mods = "Command", chars = "\u00025" },
+  { key = "Key6", mods = "Command", chars = "\u00026" },
+  { key = "Key7", mods = "Command", chars = "\u00027" },
+  { key = "Key8", mods = "Command", chars = "\u00028" },
+  { key = "Key9", mods = "Command", chars = "\u00029" },
+  { key = "Left", mods = "Command", chars = "\u0002H" },
+  { key = "Down", mods = "Command", chars = "\u0002J" },
+  { key = "Up", mods = "Command", chars = "\u0002K" },
+  { key = "Right", mods = "Command", chars = "\u0002L" },
+]
