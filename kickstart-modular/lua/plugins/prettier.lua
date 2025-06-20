@@ -7,7 +7,21 @@ return {
             prettier.setup {
                 bin = 'prettierd',
                 filetypes = {
+                    'javascript',
+                    'javascriptreact',
                     'typescript',
+                    'typescriptreact',
+                    'vue',
+                    'css',
+                    'scss',
+                    'less',
+                    'html',
+                    'json',
+                    'jsonc',
+                    'yaml',
+                    'markdown',
+                    'graphql',
+                    'handlebars',
                 },
                 cli_options = {
 

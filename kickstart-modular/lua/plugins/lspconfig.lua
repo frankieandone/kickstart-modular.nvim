@@ -28,6 +28,8 @@ return {
             require('mason-lspconfig').setup {
                 ensure_installed = {
                     'lua_ls',
+                    'typescript-language-server',
+                    'eslint',
                 },
             }
 
@@ -65,6 +67,18 @@ return {
                         },
                     },
                 },
+            }
+
+            -- TypeScript/JavaScript LSP
+            lspconfig.tsserver.setup {
+                capabilities = capabilities,
+                on_attach = function(client, bufnr)
+                    -- Disable formatting for LSP servers, as we're using null-ls for formatting
+                    if client.name ~= 'null-ls' then
+                        client.server_capabilities.documentFormattingProvider = false
+                        client.server_capabilities.documentRangeFormattingProvider = false
+                    end
+                end,
             }
 
             -- Setup LSP keymaps and autocommands

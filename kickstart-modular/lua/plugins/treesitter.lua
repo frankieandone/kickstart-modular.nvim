@@ -17,7 +17,10 @@ return {
                 'vimdoc',
                 'javascript',
                 'typescript',
+                'tsx',
                 'vue',
+                'javascriptreact',
+                'typescriptreact',
             },
             -- Autoinstall languages that are not installed
             auto_install = true,
