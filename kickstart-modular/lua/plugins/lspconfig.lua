@@ -12,15 +12,62 @@ return {
     {
         'neovim/nvim-lspconfig',
         dependencies = {
-            { 'williamboman/mason.nvim', config = true },
-            'williamboman/mason-lspconfig.nvim',
-            'WhoIsSethDaniel/mason-tool-installer.nvim',
+            { 'williamboman/mason.nvim', version = 'v1.7.0', config = true },
+            { 'williamboman/mason-lspconfig.nvim', version = 'v0.1.0', config = true },
+            { 'WhoIsSethDaniel/mason-tool-installer.nvim', config = true },
             { 'j-hui/fidget.nvim', opts = {} },
             'hrsh7th/cmp-nvim-lsp',
             'nvimtools/none-ls.nvim',
             dependencies = { 'nvim-lua/plenary.nvim' },
         },
         config = function()
+            -- Setup Mason first
+            require('mason').setup()
+            
+            -- Setup Mason LSP Config
+            require('mason-lspconfig').setup {
+                ensure_installed = {
+                    'lua_ls',
+                },
+            }
+
+            -- Setup Mason Tool Installer
+            require('mason-tool-installer').setup {
+                ensure_installed = {
+                    'stylua',
+                    'eslint_d',
+                    'prettierd',
+                    'shfmt',
+                },
+                auto_update = true,
+                run_on_start = true,
+            }
+
+            -- Setup LSP capabilities
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+            -- Setup LSP servers
+            local lspconfig = require('lspconfig')
+            lspconfig.lua_ls.setup {
+                capabilities = capabilities,
+                on_attach = function(client, bufnr)
+                    -- Disable formatting for LSP servers, as we're using null-ls for formatting
+                    if client.name ~= 'null-ls' then
+                        client.server_capabilities.documentFormattingProvider = false
+                        client.server_capabilities.documentRangeFormattingProvider = false
+                    end
+                end,
+                settings = {
+                    Lua = {
+                        completion = {
+                            callSnippet = 'Replace',
+                        },
+                    },
+                },
+            }
+
+            -- Setup LSP keymaps and autocommands
             vim.api.nvim_create_autocmd('LspAttach', {
                 group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
                 callback = function(event)
@@ -33,43 +80,13 @@ return {
                     map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
                     map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
                     map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-                    map(
-                        '<leader>ws',
-                        require('telescope.builtin').lsp_dynamic_workspace_symbols,
-                        '[W]orkspace [S]ymbols'
-                    )
+                    map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
                     map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
                     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
                     map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+                    map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
-                    -- Show diagnostics on key press 'K'
-                    map('K', '<cmd>lua vim.diagnostic.open_float()<CR>', 'Show Diagnostics')
-
-                    local client = vim.lsp.get_client_by_id(event.data.client_id)
-                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-                        local highlight_augroup =
-                            vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
-                        vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-                            buffer = event.buf,
-                            group = highlight_augroup,
-                            callback = vim.lsp.buf.document_highlight,
-                        })
-
-                        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-                            buffer = event.buf,
-                            group = highlight_augroup,
-                            callback = vim.lsp.buf.clear_references,
-                        })
-
-                        vim.api.nvim_create_autocmd('LspDetach', {
-                            group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
-                            callback = function(event2)
-                                vim.lsp.buf.clear_references()
-                                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
-                            end,
-                        })
-                    end
-
+                    -- Show diagnostics
                     vim.diagnostic.config {
                         virtual_text = false,
                         float = true,
@@ -77,76 +94,8 @@ return {
                         underline = false,
                         update_in_insert = true,
                     }
-
-                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-                        map('<leader>th', function()
-                            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-                        end, '[T]oggle Inlay [H]ints')
-                    end
-
-                    -- -- Populate the location list with LSP errors
-                    -- vim.api.nvim_buf_set_keymap(
-                    --     0,
-                    --     'n',
-                    --     '<leader>lo',
-                    --     '<cmd>lua vim.diagnostic.setloclist()<CR>',
-                    --     { noremap = true, silent = true }
-                    -- )
-                    --
-                    -- -- Go to the next diagnostic in the location list
-                    -- vim.api.nvim_set_keymap('n', ']q', '<cmd>cnext<CR>', { noremap = true, silent = true })
-                    --
-                    -- -- Go to the previous diagnostic in the location list
-                    -- vim.api.nvim_set_keymap('n', '[q', '<cmd>cprev<CR>', { noremap = true, silent = true })
-                    --
-                    -- -- Open the location list automatically when populated
-                    -- vim.cmd [[ autocmd! DiagnosticChanged * lua vim.diagnostic.setloclist() ]]
                 end,
             })
-
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-            local servers = {
-                lua_ls = {
-                    settings = {
-                        Lua = {
-                            completion = {
-                                callSnippet = 'Replace',
-                            },
-                        },
-                    },
-                },
-            }
-
-            require('mason').setup()
-
-            local ensure_installed = vim.tbl_keys(servers or {})
-            vim.list_extend(ensure_installed, {
-                'stylua',
-                'eslint_d',
-                'prettierd',
-                'shfmt',
-            })
-            require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-            require('mason-lspconfig').setup {
-                handlers = {
-                    function(server_name)
-                        require('lspconfig')[server_name].setup {
-                            on_attach = function(client, bufnr)
-                                print(server_name .. ' attached to buffer ' .. bufnr)
-                                -- Disable formatting for LSP servers, as we're using null-ls for formatting
-                                if client.name ~= 'null-ls' then
-                                    client.server_capabilities.documentFormattingProvider = false
-                                    client.server_capabilities.documentRangeFormattingProvider = false
-                                end
-                            end,
-                            capabilities = capabilities,
-                        }
-                    end,
-                },
-            }
         end,
     },
 }

@@ -1,6 +1,7 @@
 return {
     {
         'NeogitOrg/neogit',
+        version = 'v0.0.1', -- Pin to version compatible with Neovim 0.9.x
         dependencies = {
             'nvim-lua/plenary.nvim', -- required
             'sindrets/diffview.nvim', -- optional - Diff integration

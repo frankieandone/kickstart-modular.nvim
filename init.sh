@@ -176,6 +176,11 @@ if command -v tmux &> /dev/null; then
     tmux kill-server
 fi
 
+# Ensure $HOME/bin is in PATH
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+    export PATH="$HOME/bin:$PATH"
+fi
+
 # --- BEGIN: Additional setup logic moved from zshrc ---
 
 # Clone dotfiles repo if not present

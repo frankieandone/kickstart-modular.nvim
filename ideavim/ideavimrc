@@ -36,6 +36,9 @@
 "
 " -- export_keymaps()
 
+"Keep Intellij keymap as the primary
+set ideajoin
+set idearefactormode=keep
 
 " Basic settings
 set incsearch
