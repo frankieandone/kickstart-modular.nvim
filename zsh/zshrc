@@ -16,15 +16,12 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     IS_LINUX=true
 fi
 
+# Optimized load_fn using zsh globbing
 load_fn() {
     local dir="${HOME}/dotfilesx/fn"
-
-    fpath+=("$dir" "$dir"/**/*(.N/))
-
-    find "$dir" -type f | while read -r file; do
-        #extract the base name without extension
-        local func_name=$(basename "$file" | sed 's/\.[^.]*$//')
-
+    fpath+=("$dir" "$dir"/**/*(N/))
+    for file in "$dir"/*(N); do
+        local func_name="${file:t:r}"
         autoload -Uz "$func_name"
     done
 }
@@ -32,10 +29,6 @@ load_fn
 #----------------------------------------------------------------------------------------------
 export DOTFILES="${HOME}/dotfilesx"
 export ZSH_DOTFILES="${DOTFILES}/zsh"
-
-if [ ! -d "${DOTFILES}" ]; then
-    git clone git@github.com/frankieandone/dotfilesx "${DOTFILES}"
-fi
 
 #NOTE: xdg
 export XDG_CONFIG_HOME="${DOTFILES}"
@@ -49,11 +42,6 @@ if [[ "$IS_MACOS" == true ]]; then
     else
         HOMEBREW_PREFIX="/usr/local"
     fi
-    
-    if [ ! -d "$HOMEBREW_PREFIX" ]; then
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-    
     export HOMEBREW_PREFIX
     export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
     export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
@@ -63,10 +51,6 @@ if [[ "$IS_MACOS" == true ]]; then
     eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
 elif [[ "$IS_LINUX" == true ]]; then
     HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
-    if [ ! -d "$HOMEBREW_PREFIX" ]; then
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-    
     export HOMEBREW_PREFIX
     export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
     export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
@@ -80,12 +64,6 @@ fi
 #NOTE: editor
 export TERM='screen-256color'
 EDITOR="vi"
-if (nvim -v &>/dev/null); then
-    if [[ ! -e "${DOTFILES}/nvim" ]] && [[ ! -d "${DOTFILES}/nvim" ]]; then
-        git clone git@github.com:frankieandone/kickstart-modular.nvim.git "${DOTFILES}/kickstart-modular"
-        ln -sfv "${DOTFILES}/kickstart-modular" "${DOTFILES}/nvim"
-    fi
-fi
 export EDITOR="nvim"
 
 alias conf="cd ${DOTFILES} && $EDITOR ."
@@ -93,12 +71,6 @@ alias zconf="cd ${DOTFILES}/zsh && $EDITOR ."
 alias vconf="cd ${DOTFILES}/nvim && $EDITOR ."
 #----------------------------------------------------------------------------------------------
 #NOTE: volta, node, pnpm
-if ! command -v volta &> /dev/null; then
-    curl https://get.volta.sh | bash
-    export VOLTA_HOME="${HOME}/.volta"
-    export PATH="$VOLTA_HOME/bin:${PATH}"
-fi
-
 if [[ "$IS_MACOS" == true ]]; then
     export PNPM_HOME="${HOME}/Library/pnpm"
 else
@@ -108,17 +80,11 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
 #----------------------------------------------------------------------------------------------
 #NOTE: rustup, rustc, cargo
-if ! command -v rustup &> /dev/null; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source "${HOME}/.cargo/env"
-fi
+# (No install logic here, just environment if needed)
 #----------------------------------------------------------------------------------------------
 ZINIT_HOME="${DOTFILES}/zinit/zinit"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
 zmodload zsh/complist
@@ -158,138 +124,10 @@ else
 fi
 export ALACRITTY_CONFIG
 ALACRITTY_DESKTOP="${DOTFILES}/alacritty/Alacritty.desktop"
-
-if [[ "$IS_LINUX" == true ]] && ! command -v alacritty &> /dev/null; then
-    read -r "res?Do you want to remove the existing Alacritty installation? [y/N] "
-    if [ "${res[1]}" = "y" ] || [ "$res" = "Y" ]; then
-        if [ -f "${ALACRITTY_CONFIG}" ]; then
-            mv -v "$ALACRITTY_CONFIG_MACOS" "${DOTFILES}"
-            mv -v "$ALACRITTY_CONFIG_LINUX" "${DOTFILES}"
-            alacritty_config_macos="${DOTFILES}/$(basename "$ALACRITTY_CONFIG_MACOS")"
-            alacritty_config_linux="${DOTFILES}/$(basename "$ALACRITTY_CONFIG_LINUX")"
-        fi
-        if [ -f "$ALACRITTY_DESKTOP" ]; then
-            mv -v "$ALACRITTY_DESKTOP" "${DOTFILES}"
-            alacritty_desktop_tmp="${DOTFILES}/$(basename "$ALACRITTY_DESKTOP")"
-        fi
-
-        rm -rf "${ALACRITTY_HOME}"
-        git clone --depth=1 https://github.com/alacritty/alacritty.git "${ALACRITTY_HOME}"
-        rm -rf .git
-
-        [ -f "$alacritty_config_macos" ] && mv -fv "$alacritty_config_macos" "${ALACRITTY_CONFIG_MACOS}"
-        [ -f "$alacritty_config_linux" ] && mv -fv "$alacritty_config_linux" "${ALACRITTY_CONFIG_LINUX}"
-        unset alacritty_config_macos
-        unset alacritty_config_linux
-        [ -f "$alacritty_desktop_tmp" ] && mv -fv "$alacritty_desktop_tmp" "${ALACRITTY_DESKTOP}"
-        unset alacritty_desktop_tmp
-    fi
-    previous_dir="$(pwd)"
-    cd "${ALACRITTY_HOME}"
-    sudo apt install -y \
-        cmake \
-        pkg-config \
-        libfreetype6-dev \
-        libfontconfig1-dev \
-        libxcb-xfixes0-dev \
-        libxkbcommon-dev \
-        python3
-    cargo build --release
-    infocmp alacritty
-    sudo tic -xe alacritty,alacritty-direct extra/alacritty.info
-    sudo cp -fv target/release/alacritty /usr/local/bin
-    
-    if [[ "$IS_LINUX" == true ]]; then
-        sudo groupadd alacritty_users
-        sudo usermod -aG alacritty_users $USER
-        sudo chown root:alacritty_users /usr/local/bin/alacritty
-        sudo chmod 755 /usr/local/bin/alacritty 
-    fi
-    
-    if [[ "$IS_LINUX" == true ]]; then
-        mkdir -p extra/logo/patched
-        curl -L https://github.com/dfl0/mac-icons/raw/main/alacritty/icons/flat_mono/alacritty_flat_mono_full.png -o extra/logo/patched/Alacritty.png
-        sudo cp -fv extra/logo/patched/Alacritty.png /usr/share/pixmaps
-    fi
-    
-    if [[ "$IS_LINUX" == true ]]; then
-        if [ ! -f "${ALACRITTY_DESKTOP}" ]; then
-            if [ -f "${HOME}/Downloads/$(basename "$ALACRITTY_DESKTOP")" ]; then
-                cp -fv "${HOME}/Downloads/$(basename "$ALACRITTY_DESKTOP")" "${ALACRITTY_DESKTOP}"
-            elif [ -f "${HOME}/Desktop/$(basename "$ALACRITTY_DESKTOP")" ]; then
-                cp -fv "${HOME}/Desktop/$(basename "$ALACRITTY_DESKTOP")" "${ALACRITTY_DESKTOP}"
-            else
-                cp -fv extra/linux/Alacritty.desktop "${ALACRITTY_DESKTOP}"
-            fi
-        fi
-        sudo chown root:alacritty_users "${ALACRITTY_DESKTOP}"
-        sudo chmod 755 "${ALACRITTY_DESKTOP}"
-        sudo desktop-file-install "${ALACRITTY_DESKTOP}"
-        desktop-file-validate "${ALACRITTY_DESKTOP}"
-        sudo update-desktop-database
-    fi
-    
-    sudo mkdir -p /usr/local/share/man/man1
-    sudo mkdir -p /usr/local/share/man/man5
-
-    if [[ "$IS_LINUX" == true ]]; then
-        sudo apt install -y scdoc
-    elif [[ "$IS_MACOS" == true ]]; then
-        brew install scdoc
-    fi
-    
-    scdoc < extra/man/alacritty.1.scd | gzip -c | \
-        sudo tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
-    scdoc < extra/man/alacritty-msg.1.scd | gzip -c | \
-        sudo tee /usr/local/share/man/man1/alacritty-msg.1.gz > /dev/null
-    scdoc < extra/man/alacritty.5.scd | gzip -c | \
-        sudo tee /usr/local/share/man/man5/alacritty.5.gz > /dev/null
-    scdoc < extra/man/alacritty-bindings.5.scd | gzip -c | \
-        sudo tee /usr/local/share/man/man5/alacritty-bindings.5.gz > /dev/null
-
-    ZSH_COMPLETIONS="${DOTFILES}/zsh/completions"
-    echo 'fpath+=${ZSH_COMPLETIONS}' >> "${HOME}/.zshrc"
-    cp extra/completions/_alacritty ${ZSH_COMPLETIONS}/_alacritty
-    unset ZSH_COMPLETIONS
-
-    BASH_COMPLETIONS="${DOTFILES}/bash/completions"
-    mkdir -p "${BASH_COMPLETIONS}"
-    cp extra/completions/alacritty.bash "${BASH_COMPLETIONS}/alacritty"
-    echo 'source "${BASH_COMPLETIONS}/alacritty"' >> "${HOME}/.bashrc"
-    unset BASH_COMPLETIONS
-
-    cd "$previous_dir"
-    unset previous_dir
-fi
 #----------------------------------------------------------------------------------------------
-# Install required tools if not present
-if ! command -v fzf &> /dev/null; then
-    if [[ "$IS_MACOS" == true ]]; then
-        brew install fzf
-    elif [[ "$IS_LINUX" == true ]]; then
-        sudo apt install -y fzf
-    fi
-fi
-
-if ! command -v zoxide &> /dev/null; then
-    if [[ "$IS_MACOS" == true ]]; then
-        brew install zoxide
-    elif [[ "$IS_LINUX" == true ]]; then
-        sudo apt install -y zoxide
-    fi
-fi
-
-if ! command -v starship &> /dev/null; then
-    if [[ "$IS_MACOS" == true ]]; then
-        brew install starship
-    elif [[ "$IS_LINUX" == true ]]; then
-        curl -sS https://starship.rs/install.sh | sh
-    fi
-fi
-
 #case insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-z}=m:{A-Za-z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*': fzf-preview 'ls --color $realpath'
 

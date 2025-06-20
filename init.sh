@@ -176,3 +176,88 @@ if command -v tmux &> /dev/null; then
     tmux kill-server
 fi
 
+# --- BEGIN: Additional setup logic moved from zshrc ---
+
+# Clone dotfiles repo if not present
+if [ ! -d "${DOTFILES}" ]; then
+    git clone git@github.com/frankieandone/dotfilesx "${DOTFILES}"
+fi
+
+# Homebrew/Linuxbrew install (if not present)
+if [[ "$IS_MACOS" == true ]]; then
+    if [[ "$IS_M1" == true ]]; then
+        HOMEBREW_PREFIX="/opt/homebrew"
+    else
+        HOMEBREW_PREFIX="/usr/local"
+    fi
+    if [ ! -d "$HOMEBREW_PREFIX" ]; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+elif [[ "$IS_LINUX" == true ]]; then
+    HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+    if [ ! -d "$HOMEBREW_PREFIX" ]; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+fi
+
+# Volta install (if not present)
+if ! command -v volta &> /dev/null; then
+    curl https://get.volta.sh | bash
+    export VOLTA_HOME="${HOME}/.volta"
+    export PATH="$VOLTA_HOME/bin:${PATH}"
+fi
+
+# Rustup install (if not present)
+if ! command -v rustup &> /dev/null; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source "${HOME}/.cargo/env"
+fi
+
+# Alacritty build/install (Linux only, if not present)
+if [[ "$IS_LINUX" == true ]] && ! command -v alacritty &> /dev/null; then
+    previous_dir="$(pwd)"
+    ALACRITTY_HOME="${DOTFILES}/alacritty"
+    rm -rf "${ALACRITTY_HOME}"
+    git clone --depth=1 https://github.com/alacritty/alacritty.git "${ALACRITTY_HOME}"
+    cd "${ALACRITTY_HOME}"
+    sudo apt install -y \
+        cmake \
+        pkg-config \
+        libfreetype6-dev \
+        libfontconfig1-dev \
+        libxcb-xfixes0-dev \
+        libxkbcommon-dev \
+        python3
+    cargo build --release
+    sudo cp -fv target/release/alacritty /usr/local/bin
+    cd "$previous_dir"
+    unset previous_dir
+fi
+
+# Install required tools if not present
+if ! command -v fzf &> /dev/null; then
+    if [[ "$IS_MACOS" == true ]]; then
+        brew install fzf
+    elif [[ "$IS_LINUX" == true ]]; then
+        sudo apt install -y fzf
+    fi
+fi
+
+if ! command -v zoxide &> /dev/null; then
+    if [[ "$IS_MACOS" == true ]]; then
+        brew install zoxide
+    elif [[ "$IS_LINUX" == true ]]; then
+        sudo apt install -y zoxide
+    fi
+fi
+
+if ! command -v starship &> /dev/null; then
+    if [[ "$IS_MACOS" == true ]]; then
+        brew install starship
+    elif [[ "$IS_LINUX" == true ]]; then
+        curl -sS https://starship.rs/install.sh | sh
+    fi
+fi
+
+# --- END: Additional setup logic moved from zshrc ---
+
