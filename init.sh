@@ -261,3 +261,22 @@ fi
 
 # --- END: Additional setup logic moved from zshrc ---
 
+# Create lowercase symlinks for common user directories (Linux only)
+fix_case_links() {
+    if [[ "$(uname -s)" != "Linux" ]]; then
+        echo "Not running on Linux, skipping case-insensitive symlink creation."
+        return 0
+    fi
+    for dir in Downloads Desktop Documents Pictures Music Videos; do
+        lower="${HOME}/${dir:l}"
+        upper="${HOME}/$dir"
+        if [[ -d "$upper" && ! -e "$lower" ]]; then
+            ln -s "$upper" "$lower"
+            echo "Created symlink: $lower -> $upper"
+        fi
+    done
+}
+
+# Call fix_case_links at the end of setup
+fix_case_links
+
