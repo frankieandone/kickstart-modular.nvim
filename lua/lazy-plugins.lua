@@ -30,6 +30,11 @@ require('lazy').setup({
     require 'plugins.autopairs',
     require 'plugins.indent_line',
     require 'plugins.grug-far',
+
+    require 'plugins.trouble',
+    require 'plugins.nvim-colorizer',
+    -- require 'plugins.neo-tree', --use nvim-tree instead
+
     require 'plugins.todo-comments',
     require 'plugins.nvim-colorizer',
 
