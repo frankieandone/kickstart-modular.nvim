@@ -91,7 +91,12 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
+-- disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+vim.opt.gfn = 'FiraCodeNerdFont:h10'
 
 -- [[ Setting options ]]
 require 'options'
@@ -107,3 +112,6 @@ require 'lazy-plugins'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+-- NOTE: install 256_noir using git clone https://github.com/andreasvc/vim-256noir.git and copy
+-- over into "${XDG_CONFIG_HOME:-${HOME}/nvim/colors/256_noir.vim}" or https --download https://github.com/andreasvc/vim-256noir/blob/e8668a18a4a90272c1cae87e655f8bddc5ac3665/colors/256_noir.vim  into the same aforementioned file uri
+vim.cmd 'colorscheme 256_noir'
